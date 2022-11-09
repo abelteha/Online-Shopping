@@ -3,6 +3,7 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { AiOutlineSearch } from "react-icons/ai";
 
 import { FC } from "react";
+import { Catagories } from "../../model/catagories";
 
 const Form: FC<{ value: string }> = ({ value }) => {
   return (
@@ -11,12 +12,12 @@ const Form: FC<{ value: string }> = ({ value }) => {
         <select
           name=""
           id=""
-          className=" h-12 pl-4 outline-none  bg-gray-100 rounded-l-full border-r"
+          className=" h-12 w-auto pl-4 text-sm outline-none  bg-gray-100 rounded-l-full border-r"
         >
-          <option value="1">Car</option>
-          <option value="2">Dog</option>
-          <option value="3">Cat</option>
-          <option value="4">Phone</option>
+          <option value="all categories">All Categories</option>
+          {Catagories.map((cat) => (
+            <option value={`${cat.title}`}>{cat.title}</option>
+          ))}
         </select>
         <input
           type="text"
@@ -36,7 +37,7 @@ const Form: FC<{ value: string }> = ({ value }) => {
 
 const Header = () => {
   return (
-    <div className="flex justify-between p-4 items-center lg:px-[6rem] animate-slidedown py-7 border-b-2">
+    <div className=" flex justify-between p-4  bg-white backdrop:blur-lg items-center lg:px-[6rem] animate-slidedown py-7 border-b-2">
       <img src={logo} alt="" className="w-24 md:w-32" />
       <Form value="mx-[3rem]" />
       <div className="flex items-center">
