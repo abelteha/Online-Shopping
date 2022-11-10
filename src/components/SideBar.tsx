@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Catagories } from "../../model/catagories";
+import { Catagories } from "../model/catagories";
 
 const SideBar = () => {
   return (

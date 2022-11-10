@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
-import CategoryProducts from "../components/Header/CategoryProducts";
-import SideBar from "../components/Header/SideBar";
+import CategoryProducts from "../components/CategoryProducts";
+import SideBar from "../components/SideBar";
 import { useGetCategoryProductsQuery } from "../redux/dummyJsonApi";
 
 const ContentPage = () => {

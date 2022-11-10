@@ -1,7 +1,6 @@
 import { Fragment } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Header from "./components/Header/Header";
-import SideBar from "./components/Header/SideBar";
 import ContentPage from "./pages/ContentPage";
 import HomePage from "./pages/HomePage";
 const App = () => {

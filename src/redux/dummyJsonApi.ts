@@ -7,8 +7,8 @@ export const dummyJsonApi = createApi({
   }),
 
   endpoints: (builder) => ({
-    getAllProducts: builder.query<{ products: any[] }, void>({
-      query: () => "/products",
+    getAllCategories: builder.query<string[], void>({
+      query: () => "/products/categories",
     }),
     getCategoryProducts: builder.query<{ products: any[] }, string | undefined>(
       {
@@ -18,5 +18,5 @@ export const dummyJsonApi = createApi({
   }),
 });
 
-export const { useGetAllProductsQuery, useGetCategoryProductsQuery } =
+export const { useGetAllCategoriesQuery, useGetCategoryProductsQuery } =
   dummyJsonApi;

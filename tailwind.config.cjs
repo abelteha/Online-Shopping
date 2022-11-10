@@ -17,7 +17,7 @@ module.exports = {
           to: { opacity: 1 },
         },
         slideup: {
-          from: { opacity: 0, transform: "translateY(25%)" },
+          from: { opacity: 0, transform: "translateY(0%)" },
           to: { opacity: 1, transform: "none" },
         },
         slidedown: {

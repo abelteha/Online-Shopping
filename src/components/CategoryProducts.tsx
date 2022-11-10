@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useGetCategoryProductsQuery } from "../../redux/dummyJsonApi";
+import { useGetCategoryProductsQuery } from "../redux/dummyJsonApi";
 
 const CategoryProducts = () => {
   const param = useParams();
@@ -12,6 +12,7 @@ const CategoryProducts = () => {
   if (error) {
     return <div>Something is wrong!, Try Again!</div>;
   }
+
   return (
     <div className="flex-1 bg-red-200 animate-slideup">
       <ul>

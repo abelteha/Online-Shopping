@@ -4,6 +4,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 
 import { FC } from "react";
 import { Catagories } from "../../model/catagories";
+import { useNavigate } from "react-router-dom";
 
 const Form: FC<{ value: string }> = ({ value }) => {
   return (
@@ -12,7 +13,7 @@ const Form: FC<{ value: string }> = ({ value }) => {
         <select
           name=""
           id=""
-          className=" h-12 w-auto pl-4 text-sm outline-none  bg-gray-100 rounded-l-full border-r"
+          className=" h-12 w-auto text-center text-sm outline-none  bg-gray-100 rounded-l-full border-r"
         >
           <option value="all categories">All Categories</option>
           {Catagories.map((cat) => (
@@ -36,9 +37,16 @@ const Form: FC<{ value: string }> = ({ value }) => {
 };
 
 const Header = () => {
+  const navigate = useNavigate();
+
   return (
     <div className=" flex justify-between p-4  bg-white backdrop:blur-lg items-center lg:px-[6rem] animate-slidedown py-7 border-b-2">
-      <img src={logo} alt="" className="w-24 md:w-32" />
+      <img
+        src={logo}
+        alt=""
+        className="w-24 md:w-32"
+        onClick={() => navigate("/")}
+      />
       <Form value="mx-[3rem]" />
       <div className="flex items-center">
         <AiOutlineSearch className="md:w-10 md:h-10 w-8 h-8 text-[#a75b29] mr-4 md:hidden" />

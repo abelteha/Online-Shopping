@@ -1,9 +1,10 @@
 import produce, { produceWithPatches } from "immer";
 import { Fragment } from "react";
-import { useGetAllProductsQuery } from "../redux/dummyJsonApi";
+import CategoryCard from "../components/Cards/CategoryCard";
+import { useGetAllCategoriesQuery } from "../redux/dummyJsonApi";
 
 const HomePage = () => {
-  const { data, error, isFetching } = useGetAllProductsQuery();
+  const { data, error, isFetching } = useGetAllCategoriesQuery();
 
   if (isFetching) {
     return <p>fetching products...</p>;
@@ -12,14 +13,13 @@ const HomePage = () => {
     return <p>Something went wrong!, Try again.</p>;
   }
   return (
-    <Fragment>
-      <h1>Products</h1>
-      <ul>
-        {data!.products.map((product) => (
-          <li>{product.title}</li>
+    <div className="flex justify-center animate-slideup">
+      <div className="grid grid-cols sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10 justify-center items-center my-10">
+        {data!.map((cat) => (
+          <CategoryCard key={cat} title={cat} />
         ))}
-      </ul>
-    </Fragment>
+      </div>
+    </div>
   );
 };
 
