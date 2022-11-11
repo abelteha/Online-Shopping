@@ -9,7 +9,7 @@ const HomePage = () => {
   const { data, error, isFetching } = useGetAllCategoriesQuery();
 
   if (isFetching) {
-    return <Loader width={100} />;
+    return <Loader clasName="w-full" />;
   }
   if (error) {
     return <Error width={100} />;
