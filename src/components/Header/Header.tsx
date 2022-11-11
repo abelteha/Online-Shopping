@@ -44,7 +44,7 @@ const Header = () => {
       <img
         src={logo}
         alt=""
-        className="w-24 md:w-32"
+        className="w-24 hover:cursor-pointer md:w-32"
         onClick={() => navigate("/")}
       />
       <Form value="mx-[3rem]" />

@@ -1,16 +1,18 @@
 import produce, { produceWithPatches } from "immer";
 import { Fragment } from "react";
 import CategoryCard from "../components/Cards/CategoryCard";
+import Error from "../components/UI/Error";
+import Loader from "../components/UI/Loader";
 import { useGetAllCategoriesQuery } from "../redux/dummyJsonApi";
 
 const HomePage = () => {
   const { data, error, isFetching } = useGetAllCategoriesQuery();
 
   if (isFetching) {
-    return <p>fetching products...</p>;
+    return <Loader width={100} />;
   }
   if (error) {
-    return <p>Something went wrong!, Try again.</p>;
+    return <Error width={100} />;
   }
   return (
     <div className="flex justify-center animate-slideup">

@@ -9,8 +9,6 @@ const CategoryCard: FC<{ title: string }> = ({ title }) => {
     return <p></p>;
   }
 
-  const images = setTimeout(() => {}, 3);
-
   return (
     <Link to={`/categories/${title}`} className="group">
       <div className="w-[330px] h-[330px] bg-gray-100 rounded-xl p-4 flex flex-col justify-between group-hover:bg-[#ffe3d1]">
