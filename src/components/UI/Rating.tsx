@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { BsStar, BsStarHalf, BsStarFill } from "react-icons/bs";
 
-const Rating: FC<{ rating: string; clasName: string }> = (props) => {
+const Rating: FC<{ rating: number; clasName: string }> = (props) => {
   const fRating = Math.trunc(+props.rating);
   let fullRating = fRating;
   const decimalRating = (+props.rating % 1) * 100;

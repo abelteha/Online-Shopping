@@ -3,7 +3,7 @@ import { Catagories } from "../model/catagories";
 
 const SideBar = () => {
   return (
-    <div className="w-[300px] overflow-scroll flex flex-col items-center">
+    <div className="w-[300px] overflow-scroll md:flex flex-col items-center hidden ">
       <h1 className="text-2xl font-bold my-6">Catagories</h1>
       <ul>
         {Catagories.map((cat) => (

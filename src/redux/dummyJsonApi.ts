@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { Products } from "../model/Product";
 
 export const dummyJsonApi = createApi({
   reducerPath: "dummyJsonApi",
@@ -10,11 +11,15 @@ export const dummyJsonApi = createApi({
     getAllCategories: builder.query<string[], void>({
       query: () => "/products/categories",
     }),
-    getCategoryProducts: builder.query<{ products: any[] }, string | undefined>(
-      {
-        query: (category) => `/products/category/${category}`,
-      }
-    ),
+    getCategoryProducts: builder.query<
+      { products: Products[] },
+      string | undefined
+    >({
+      query: (category) => `/products/category/${category}`,
+    }),
+    getSingleProduct: builder.query<{}, number>({
+      query: (id) => `/products/${id}`,
+    }),
   }),
 });
 

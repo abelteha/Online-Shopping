@@ -4,30 +4,39 @@ import { useGetCategoryProductsQuery } from "../redux/dummyJsonApi";
 import ProductCard from "./Cards/ProductCard";
 import Loader from "./UI/Loader";
 import Error from "./UI/Error";
+import { useDispatch } from "react-redux";
+import { categoryProductsAction } from "../redux/category-products";
 
 const CategoryProducts = () => {
   const param = useParams();
+  const dispatch = useDispatch();
   const { data, error, isFetching } = useGetCategoryProductsQuery(
     param.categoryID
   );
   const divRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (divRef.current) {
       divRef.current.scrollTop = 0;
     }
   });
-  if (isFetching) {
-    return <Loader width={78} />;
-  }
   if (error) {
     return <Error width={78} />;
+  } else if (isFetching) {
+    return <Loader clasName="xl:w-[78%] lg:w-[70%]  w-full" />;
+  } else {
+    dispatch(categoryProductsAction.setNewCategoryProducts(data?.products));
   }
 
   return (
-    <div ref={divRef} className="flex-1 overflow-scroll ">
+    <div
+      ref={divRef}
+      className="flex-1 flex sm:block justify-center overflow-scroll "
+    >
       <ul>
         {data?.products.map((item) => (
           <ProductCard
+            id={item.id}
             key={item.id}
             img={item.thumbnail}
             title={item.title}
