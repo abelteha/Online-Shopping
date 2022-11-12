@@ -11,3 +11,9 @@ export interface Products {
   thumbnail: string;
   images: string[];
 }
+
+export interface InitialState {
+  products: Products[];
+  SingleProduct: Products;
+  activeImg: string;
+}

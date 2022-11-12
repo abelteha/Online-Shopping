@@ -19,6 +19,12 @@
   -webkit-text-size-adjust: 100%;
 } */
 
+.radioInput:checked + .radioImg {
+  outline: 2px solid #ccc;
+  border-radius: 5px;
+  padding: 2px;
+}
+
 .loader,
 .loader:before,
 .loader:after {
