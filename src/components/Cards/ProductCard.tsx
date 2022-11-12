@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Rating from "../UI/rating";
+import Rating from "../UI/Rating";
 
 const ProductCard: FC<{
   id: number;

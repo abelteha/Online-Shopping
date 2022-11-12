@@ -11,3 +11,4 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(dummyJsonApi.middleware),
 });
+export type RootState = ReturnType<typeof store.getState>;

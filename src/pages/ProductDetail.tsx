@@ -1,18 +1,22 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, Fragment, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import Rating from "../components/UI/Rating";
 import { Products } from "../model/Product";
+import { BsCartPlusFill } from "react-icons/bs";
 
 import { categoryProductsAction } from "../redux/category-products";
+import { RootState } from "../redux/store";
+import Galary from "../components/Galary";
 
 const ProductDetail = () => {
   const param = useParams();
   const dispatch = useDispatch();
   const product: Products = useSelector(
-    (state: any) => state.categoryReducer.SingleProduct
+    (state: RootState) => state.categoryReducer.SingleProduct
   );
   const activeImg: string = useSelector(
-    (state: any) => state.categoryReducer.activeImg
+    (state: RootState) => state.categoryReducer.activeImg
   );
 
   useEffect(() => {
@@ -24,15 +28,15 @@ const ProductDetail = () => {
     return <p></p>;
   }
   return (
-    <div className="flex flex-col sm:mt-2 ">
-      <div className="flex justify-center sm:bg-transparent  bg-gray-50">
-        <div className="flex flex-col justify-center items-center">
+    <Fragment>
+      <div className="flex  flex-col justify-center py-10 md:flex-row md:justify-between gap-10   mb-[1rem] bg-gray-50  ">
+        <div className="flex  flex-1 flex-col justify-center items-center md:ml-4">
           <img
             src={activeImg}
             alt=""
-            className="w-[90%] h-[250px] sm:w-1/2 sm:h-1/2 object-cover"
+            className="w-[90%] h-[250px] sm:w-[500px] sm:h-[400px] object-contain"
           />
-          <div className="flex flex-wrap justify-around mt-2 gap-4">
+          <div className="flex flex-wrap justify-around mt-2 gap-4 px-5">
             {product?.images.map((img, i) => (
               <label>
                 <input
@@ -54,8 +58,51 @@ const ProductDetail = () => {
             ))}
           </div>
         </div>
+        <div className="flex  flex-1 flex-col  items-center md:items-start mt-10  px-4">
+          <h1 className="text-2xl capitalize font-bold text-center md:text-start">
+            {product.title}
+          </h1>
+          <p className="italic text-gray-500 text-center md:text-start mx-4 mt-2">
+            {product.description}
+          </p>
+          <div className="flex flex-col items-center  md:items-start ">
+            <table className="table-fixed  mt-10 w-[70%] sm:pl-10 sm:w-[50%] md:w-[70%] md:pl-0 ">
+              <tbody>
+                <tr>
+                  <td className="font-bold mr-10">Brand:</td>
+                  <td>{product.brand}</td>
+                </tr>
+                <tr>
+                  <td className="font-bold">Rating:</td>
+                  <td>
+                    <div className="flex justify-start items-center gap-2">
+                      <Rating rating={product.rating} clasName="" />
+                      {product.rating}
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td className="font-bold">Stock:</td>
+                  <td>{product.stock}</td>
+                </tr>
+                <tr>
+                  <td className="font-bold">Price:</td>
+                  <td className="font-bold">${product.price}</td>
+                </tr>
+                <tr>
+                  <td className="font-bold">Discount:</td>
+                  <td>{product.discountPercentage}%</td>
+                </tr>
+              </tbody>
+            </table>
+            <button className="border-none px-5 py-2 hover:bg-[#a75b29] bg-[#C56E33] text-white rounded-lg w-[10rem] mt-6">
+              Add To Cart <BsCartPlusFill className="inline ml-1" />
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
+      <Galary />
+    </Fragment>
   );
 };
 
