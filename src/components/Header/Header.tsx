@@ -40,7 +40,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <div className=" flex justify-between p-4  bg-white backdrop:blur-lg items-center lg:px-[6rem] animate-slidedown py-7 border-b-2">
+    <div className=" flex justify-between p-4 sticky top-0  bg-white backdrop:blur-lg items-center lg:px-[6rem] animate-slidedown py-7 border-b-2">
       <img
         src={logo}
         alt=""

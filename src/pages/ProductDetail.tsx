@@ -7,7 +7,8 @@ import { BsCartPlusFill } from "react-icons/bs";
 
 import { categoryProductsAction } from "../redux/category-products";
 import { RootState } from "../redux/store";
-import Galary from "../components/Galary";
+import Galary from "../components/Product/Galary";
+import Feedback from "../components/Product/Feedback";
 
 const ProductDetail = () => {
   const param = useParams();
@@ -29,7 +30,7 @@ const ProductDetail = () => {
   }
   return (
     <Fragment>
-      <div className="flex  flex-col justify-center py-10 md:flex-row md:justify-between gap-10   mb-[1rem] bg-gray-50  ">
+      <div className="flex  flex-col justify-center py-16 md:flex-row md:justify-between gap-10    bg-gray-50  ">
         <div className="flex  flex-1 flex-col justify-center items-center md:ml-4">
           <img
             src={activeImg}
@@ -102,6 +103,7 @@ const ProductDetail = () => {
         </div>
       </div>
       <Galary />
+      <Feedback />
     </Fragment>
   );
 };
