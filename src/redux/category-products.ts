@@ -1,5 +1,5 @@
-import { createSlice, current } from "@reduxjs/toolkit";
-import { InitialState, Products } from "../model/Product";
+import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
+import { InitialState, Products } from "../types/Product";
 
 const initialState: InitialState = {
   products: [],
@@ -13,14 +13,13 @@ const categoryProducts = createSlice({
     setNewCategoryProducts(state, action) {
       state.products = action.payload;
     },
-    getSingleProduct(state, action) {
+    getSingleProduct(state, action: PayloadAction<string>) {
       const products = state.products.filter(
         (item: Products) => item.title === action.payload
       );
 
       if (products.length > 0) {
         localStorage.setItem("SingleProduct", JSON.stringify(products[0]));
-        console.log(localStorage.getItem("SingleProduct"));
       }
     },
     setDefaultActiveImg(state) {

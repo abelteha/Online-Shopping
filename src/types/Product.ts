@@ -1,4 +1,4 @@
-export interface Products {
+export type Products = {
   id: number;
   title: string;
   description: string;
@@ -10,10 +10,10 @@ export interface Products {
   category: string;
   thumbnail: string;
   images: string[];
-}
+};
 
-export interface InitialState {
+export type InitialState = {
   products: Products[];
   // SingleProduct: Products;
   activeImg: string;
-}
+};

@@ -1,13 +1,10 @@
-import { Reducer, ReducerState } from "react";
-import { useSelector } from "react-redux";
-import { Products } from "../../model/Product";
-import { RootState } from "../../redux/store";
+import { Products } from "../../types/Product";
 
 const Galary = () => {
   const product: Products = JSON.parse(localStorage.getItem("SingleProduct")!);
 
   return (
-    <div className=" bg-[#ffa37bd9] py-[3rem]  flex-col items-center hidden sm:flex">
+    <div className=" bg-[#ffa37bd9] py-[3rem]  flex-col items-center hidden  animate-slideup sm:flex">
       <h1 className="text-center text-white text-[3rem] font-bold mb-10">
         Galary
       </h1>

@@ -3,7 +3,7 @@ import fbImg from "../../assets/FB.jpg";
 const Feedback = () => {
   return (
     <Fragment>
-      <h1 className="text-[2rem] font-bold text-[#a75b29] text-center bg-gray-100 pt-10">
+      <h1 className="text-[2rem] font-bold text-[#a75b29] text-center bg-gray-100 pt-10 animate-slideup">
         FeedBacks
       </h1>
 

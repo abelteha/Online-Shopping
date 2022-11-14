@@ -1,6 +1,7 @@
 import { FC } from "react";
-import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../model/hooks";
 import { categoryProductsAction } from "../../redux/category-products";
 import Rating from "../UI/Rating";
 
@@ -13,11 +14,12 @@ const ProductCard: FC<{
   discount: number;
 }> = (props) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const originalPrice = (100 * +props.price) / (100 - +props.discount);
 
   const productClickHandler = () => {
     dispatch(categoryProductsAction.getSingleProduct(props.title));
+
     navigate(`${props.title}`);
   };
   return (

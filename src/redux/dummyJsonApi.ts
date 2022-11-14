@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Products } from "../model/Product";
+import { Products } from "../types/Product";
 
 export const dummyJsonApi = createApi({
   reducerPath: "dummyJsonApi",

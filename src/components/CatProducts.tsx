@@ -1,15 +1,15 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useGetCategoryProductsQuery } from "../redux/dummyJsonApi";
 import ProductCard from "./Cards/ProductCard";
 import Loader from "./UI/Loader";
 import Error from "./UI/Error";
-import { useDispatch } from "react-redux";
 import { categoryProductsAction } from "../redux/category-products";
+import { useAppDispatch } from "../model/hooks";
 
 const CategoryProducts = () => {
   const param = useParams();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { data, error, isFetching } = useGetCategoryProductsQuery(
     param.categoryID
   );

@@ -1,36 +1,29 @@
-import React, { FC, Fragment, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { Fragment, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Rating from "../components/UI/Rating";
-import { Products } from "../model/Product";
+import { Products } from "../types/Product";
 import { BsCartPlusFill } from "react-icons/bs";
 
 import { categoryProductsAction } from "../redux/category-products";
-import { RootState } from "../redux/store";
 import Galary from "../components/Product/Galary";
 import Feedback from "../components/Product/Feedback";
+import { useAppDispatch, useAppSelector } from "../model/hooks";
 
 const ProductDetail = () => {
   const param = useParams();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const product: Products = JSON.parse(localStorage.getItem("SingleProduct")!);
-  const activeImg: string = useSelector(
-    (state: RootState) => state.categoryReducer.activeImg
+  const activeImg: string = useAppSelector(
+    (state) => state.categoryReducer.activeImg
   );
 
   useEffect(() => {
-    dispatch(categoryProductsAction.getSingleProduct(param.product));
     dispatch(categoryProductsAction.setDefaultActiveImg());
   }, []);
 
-  console.log(product);
-
-  if (product.images === undefined) {
-    return <p></p>;
-  }
   return (
     <Fragment>
-      <div className="flex  flex-col justify-center py-16 md:flex-row md:justify-between gap-10    bg-gray-50  ">
+      <div className="flex  flex-col justify-center py-16 md:flex-row md:justify-between gap-10  animate-slideup  bg-gray-50  ">
         <div className="flex  flex-1 flex-col justify-center items-center md:ml-4">
           <img
             src={activeImg}
