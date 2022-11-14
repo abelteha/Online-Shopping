@@ -1,4 +1,4 @@
-import { Products } from "../../types/Product";
+import { Products } from "../../types/types";
 
 const Galary = () => {
   const product: Products = JSON.parse(localStorage.getItem("SingleProduct")!);

@@ -12,7 +12,9 @@ const SideBar = () => {
             className="flex items-center text-lg mb-4 gap-4"
           >
             {cat.icon}
-            <li className="">{cat.title}</li>
+            <li className="" key={cat.title}>
+              {cat.title}
+            </li>
           </Link>
         ))}
       </ul>

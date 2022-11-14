@@ -1,10 +1,11 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { useGetCategoryProductsQuery } from "../redux/dummyJsonApi";
 import ProductCard from "./Cards/ProductCard";
 import Loader from "./UI/Loader";
 import Error from "./UI/Error";
-import { categoryProductsAction } from "../redux/category-products";
+import { useDispatch } from "react-redux";
+import { ProductsAction } from "../redux/products-slice";
 import { useAppDispatch } from "../model/hooks";
 
 const CategoryProducts = () => {
@@ -25,7 +26,7 @@ const CategoryProducts = () => {
   } else if (isFetching) {
     return <Loader clasName="xl:w-[78%] lg:w-[70%]  w-full" />;
   } else {
-    dispatch(categoryProductsAction.setNewCategoryProducts(data?.products));
+    dispatch(ProductsAction.setNewCategoryProducts(data?.products));
   }
 
   return (

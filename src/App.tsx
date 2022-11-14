@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Header from "./components/Header/Header";
+import SearchProducts from "./pages/SearchProducts";
 import CategoryProductsPage from "./pages/CategoryProductPage";
 import HomePage from "./pages/HomePage";
 import ProductDetail from "./pages/ProductDetail";
@@ -13,6 +14,7 @@ const App = () => {
         <Route path="categories/:categoryID">
           <Route index={true} element={<CategoryProductsPage />} />
           <Route index={false} path=":product" element={<ProductDetail />} />
+          <Route path="search" element={<SearchProducts />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" />} />

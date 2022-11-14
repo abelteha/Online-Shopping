@@ -1,10 +1,10 @@
 import { Fragment, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Rating from "../components/UI/Rating";
-import { Products } from "../types/Product";
+import { Products } from "../types/types";
 import { BsCartPlusFill } from "react-icons/bs";
 
-import { categoryProductsAction } from "../redux/category-products";
+import { ProductsAction } from "../redux/products-slice";
 import Galary from "../components/Product/Galary";
 import Feedback from "../components/Product/Feedback";
 import { useAppDispatch, useAppSelector } from "../model/hooks";
@@ -14,11 +14,11 @@ const ProductDetail = () => {
   const dispatch = useAppDispatch();
   const product: Products = JSON.parse(localStorage.getItem("SingleProduct")!);
   const activeImg: string = useAppSelector(
-    (state) => state.categoryReducer.activeImg
+    (state) => state.productReducer.activeImg
   );
 
   useEffect(() => {
-    dispatch(categoryProductsAction.setDefaultActiveImg());
+    dispatch(ProductsAction.setDefaultActiveImg());
   }, []);
 
   return (
@@ -37,9 +37,7 @@ const ProductDetail = () => {
                   type="radio"
                   name="radio"
                   value={i}
-                  onChange={() =>
-                    dispatch(categoryProductsAction.setActiveImg(img))
-                  }
+                  onChange={() => dispatch(ProductsAction.setActiveImg(img))}
                   className="radioInput absolute opacity-0 w-0 h-0 cursor-pointer"
                 />
                 <img

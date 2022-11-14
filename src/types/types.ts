@@ -12,8 +12,20 @@ export type Products = {
   images: string[];
 };
 
-export type InitialState = {
+export type InitialProductState = {
   products: Products[];
-  // SingleProduct: Products;
+
   activeImg: string;
+};
+
+export type Search = {
+  text: string;
+  searchAllCategories: boolean;
+};
+
+export type InitialSearchState = {
+  searchText: string;
+  searchAllCategories: boolean;
+  searchResult: Products[];
+  selectedCategory: string;
 };

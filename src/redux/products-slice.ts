@@ -1,13 +1,13 @@
 import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
-import { InitialState, Products } from "../types/Product";
+import { InitialProductState, Products, Search } from "../types/types";
 
-const initialState: InitialState = {
+const initialState: InitialProductState = {
   products: [],
   activeImg: "",
 };
 
-const categoryProducts = createSlice({
-  name: "categoryProducts",
+const Products = createSlice({
+  name: "Products",
   initialState: initialState,
   reducers: {
     setNewCategoryProducts(state, action) {
@@ -29,11 +29,11 @@ const categoryProducts = createSlice({
 
       state.activeImg = SingleProduct.thumbnail;
     },
-    setActiveImg(state, action) {
+    setActiveImg(state, action: PayloadAction<string>) {
       state.activeImg = action.payload;
     },
   },
 });
 
-export const categoryProductsAction = categoryProducts.actions;
-export default categoryProducts.reducer;
+export const ProductsAction = Products.actions;
+export default Products.reducer;
