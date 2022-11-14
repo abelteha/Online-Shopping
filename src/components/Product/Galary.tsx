@@ -4,9 +4,7 @@ import { Products } from "../../model/Product";
 import { RootState } from "../../redux/store";
 
 const Galary = () => {
-  const product = useSelector(
-    (state: RootState) => state.categoryReducer.SingleProduct
-  );
+  const product: Products = JSON.parse(localStorage.getItem("SingleProduct")!);
 
   return (
     <div className=" bg-[#ffa37bd9] py-[3rem]  flex-col items-center hidden sm:flex">

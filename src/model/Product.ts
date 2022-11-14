@@ -14,6 +14,6 @@ export interface Products {
 
 export interface InitialState {
   products: Products[];
-  SingleProduct: Products;
+  // SingleProduct: Products;
   activeImg: string;
 }

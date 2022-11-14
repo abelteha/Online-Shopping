@@ -13,9 +13,7 @@ import Feedback from "../components/Product/Feedback";
 const ProductDetail = () => {
   const param = useParams();
   const dispatch = useDispatch();
-  const product: Products = useSelector(
-    (state: RootState) => state.categoryReducer.SingleProduct
-  );
+  const product: Products = JSON.parse(localStorage.getItem("SingleProduct")!);
   const activeImg: string = useSelector(
     (state: RootState) => state.categoryReducer.activeImg
   );
@@ -24,6 +22,8 @@ const ProductDetail = () => {
     dispatch(categoryProductsAction.getSingleProduct(param.product));
     dispatch(categoryProductsAction.setDefaultActiveImg());
   }, []);
+
+  console.log(product);
 
   if (product.images === undefined) {
     return <p></p>;
