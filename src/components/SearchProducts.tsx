@@ -8,10 +8,12 @@ import Error from "../components/UI/Error";
 import { searchAction } from "../redux/search-slice";
 import { iteratorSymbol } from "immer/dist/internal";
 import { useSearchParams } from "react-router-dom";
+import { ProductsAction } from "../redux/products-slice";
 
 const SearchProducts = () => {
   const divRef = useRef<HTMLDivElement>(null);
   const search = useAppSelector((state) => state.searchReducer);
+
   const searchText = localStorage.getItem("searchText");
   const isAllCategories = localStorage.getItem("searchAllCategories");
   const category = localStorage.getItem("category");
@@ -36,11 +38,11 @@ const SearchProducts = () => {
     return <Loader clasName="xl:w-[78%] lg:w-[70%]  w-full" />;
   } else {
     dispatch(searchAction.searchResults(data?.products!));
+    dispatch(ProductsAction.setNewCategoryProducts(data?.products!));
   }
   return (
-    <div className="flex sm:h-[calc(100vh-110px)] h-[calc(100vh-90px)] ">
-      <SideBar />
-      <div className="flex-1 flex sm:block justify-center overflow-scroll ">
+    <div className="flex-1 flex  sm:block justify-center overflow-scroll ">
+      <ul>
         {(isAllCategories === "true"
           ? search.searchResult
           : filteredProducts
@@ -53,9 +55,19 @@ const SearchProducts = () => {
             rating={item.rating}
             price={item.price}
             discount={item.discountPercentage}
+            category={item.category}
           />
         ))}
-      </div>
+      </ul>
+      {search.searchResult.length === 0 && filteredProducts.length === 0 ? (
+        <div className=" h-[100vh] bg-gray-100 pt-10 px-5">
+          <p className="text-xl font-bold capitalize text-center pt-10 md:text-2xl ">
+            no product found with the name "{searchText}" in {category}
+          </p>
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

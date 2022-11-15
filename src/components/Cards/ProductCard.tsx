@@ -12,6 +12,7 @@ const ProductCard: FC<{
   rating: number;
   price: number;
   discount: number;
+  category: string;
 }> = (props) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -20,7 +21,7 @@ const ProductCard: FC<{
   const productClickHandler = () => {
     dispatch(ProductsAction.getSingleProduct(props.title));
 
-    navigate(`${props.title}`);
+    navigate(`/categories/${props.category}/${props.title}`);
   };
   return (
     <div className="group">

@@ -44,6 +44,7 @@ const CategoryProducts = () => {
             rating={item.rating}
             price={item.price}
             discount={item.discountPercentage}
+            category={item.category}
           />
         ))}
       </ul>

@@ -1,10 +1,11 @@
 import { Fragment } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Header from "./components/Header/Header";
-import SearchProducts from "./pages/SearchProducts";
+
 import CategoryProductsPage from "./pages/CategoryProductPage";
 import HomePage from "./pages/HomePage";
 import ProductDetail from "./pages/ProductDetail";
+import SearchPage from "./pages/SearchPage";
 const App = () => {
   return (
     <Fragment>
@@ -14,7 +15,7 @@ const App = () => {
         <Route path="categories/:categoryID">
           <Route index={true} element={<CategoryProductsPage />} />
           <Route index={false} path=":product" element={<ProductDetail />} />
-          <Route path="search" element={<SearchProducts />} />
+          <Route path="search" element={<SearchPage />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" />} />
