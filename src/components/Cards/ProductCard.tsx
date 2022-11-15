@@ -26,7 +26,7 @@ const ProductCard: FC<{
   return (
     <div className="group">
       <div
-        className="flex flex-col w-[300px] sm:w-[97%] sm:flex-row sm:justify-between justify-center items-center sm:items-start bg-white   m-5  gap-10 p-5 drop-shadow-2xl rounded-xl animate-slideup group-hover:bg-[#ffe3d1]"
+        className="flex flex-col w-[300px]  sm:w-[calc(100vw-35px)] md:w-[calc(100vw-335px)] sm:flex-row sm:justify-between justify-center items-center sm:items-start bg-white  m-5  gap-10 p-5 drop-shadow-2xl rounded-xl animate-slideup group-hover:bg-[#ffe3d1]"
         onClick={productClickHandler}
       >
         <img

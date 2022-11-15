@@ -1,8 +1,8 @@
-import { FC } from "react";
-
-const Error: FC<{ width: number }> = ({ width }) => {
+const Error = () => {
   return (
-    <div className={`w-[${width}%] h-[100vh] bg-gray-50 `}>
+    <div
+      className={`md:w-[calc(100vw-300px)] w-full sm:h-[calc(100vh-110px)] h-[calc(100vh-90px)] bg-gray-50 `}
+    >
       <h1 className="text-2xl font-bold text-center pt-[10rem]">
         Something is Wrong!, Try Again.
       </h1>

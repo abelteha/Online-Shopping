@@ -33,7 +33,7 @@ const SearchProducts = () => {
   }, [search.searchResult]);
 
   if (error) {
-    return <Error width={78} />;
+    return <Error />;
   } else if (isFetching) {
     return <Loader clasName="xl:w-[78%] lg:w-[70%]  w-full" />;
   } else {

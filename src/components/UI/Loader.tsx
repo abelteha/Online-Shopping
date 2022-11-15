@@ -3,7 +3,7 @@ import { FC } from "react";
 const Loader: FC<{ clasName: string }> = ({ clasName }) => {
   return (
     <div
-      className={`${clasName} h-[100vh] flex justify-center pt-[10rem] bg-black/5 `}
+      className={`md:w-[calc(100vw-300px)] w-full sm:h-[calc(100vh-110px)] h-[calc(100vh-90px)] bg-gray-50 flex justify-center pt-20 `}
     >
       <span className="loader"></span>
     </div>
