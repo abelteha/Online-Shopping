@@ -7,21 +7,28 @@ import Loader from "../components/UI/Loader";
 import Error from "../components/UI/Error";
 import { searchAction } from "../redux/search-slice";
 import { iteratorSymbol } from "immer/dist/internal";
+import { useSearchParams } from "react-router-dom";
 
 const SearchProducts = () => {
   const divRef = useRef<HTMLDivElement>(null);
   const search = useAppSelector((state) => state.searchReducer);
+  const searchText = localStorage.getItem("searchText");
+  const isAllCategories = localStorage.getItem("searchAllCategories");
+  const category = localStorage.getItem("category");
   const dispatch = useAppDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
   // const [data]
 
   const { data, isFetching, error } = useGetSearchedItemQuery(
-    search.searchText
+    searchParams.get("q")!
   );
   const filteredProducts = search.searchResult
-    ? search.searchResult.filter(
-        (item) => item.category === search.selectedCategory
-      )
+    ? search.searchResult.filter((item) => item.category === category)
     : [];
+
+  useEffect(() => {
+    setSearchParams({ q: searchText! });
+  }, [search.searchResult]);
 
   if (error) {
     return <Error width={78} />;
@@ -31,13 +38,10 @@ const SearchProducts = () => {
     dispatch(searchAction.searchResults(data?.products!));
   }
   return (
-    <div className="flex">
+    <div className="flex sm:h-[calc(100vh-110px)] h-[calc(100vh-90px)] ">
       <SideBar />
-      <div
-        // ref={divRef}
-        className="flex-1 flex sm:block justify-center overflow-scroll h-[] "
-      >
-        {(search.searchAllCategories === true
+      <div className="flex-1 flex sm:block justify-center overflow-scroll ">
+        {(isAllCategories === "true"
           ? search.searchResult
           : filteredProducts
         ).map((item) => (

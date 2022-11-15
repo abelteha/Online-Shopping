@@ -2,7 +2,7 @@ import logo from "../../assets/abay.svg";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { AiOutlineSearch } from "react-icons/ai";
 
-import React, { FC, FormEvent, useState } from "react";
+import React, { FC, FormEvent, useRef, useState } from "react";
 import { Catagories } from "../../model/catagories";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useGetSearchedItemQuery } from "../../redux/dummyJsonApi";
@@ -11,60 +11,46 @@ import { searchAction } from "../../redux/search-slice";
 
 const Form: FC<{ value: string }> = ({ value }) => {
   const [searchText, setSearchText] = useState<string>("");
-  const [selectedCategory, setSelectedCategory] =
-    useState<string>("all categories");
+  const selectRef = useRef<HTMLSelectElement>(null);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
+  // localStorage.setItem("category", "all categories");
 
   const searchChangeHandler = (e: React.FormEvent<HTMLInputElement>) => {
     setSearchText(e.currentTarget.value);
   };
-  const dropDownHandler = (e: FormEvent<HTMLSelectElement>) => {
-    setSelectedCategory(e.currentTarget.value);
-    console.log(selectedCategory);
-  };
+  // const dropDownHandler = (e: FormEvent<HTMLSelectElement>) => {
+  //   localStorage.setItem("category", e.currentTarget.value);
+  // };
   const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(searchAction.setSelectedCategory(selectedCategory));
+    // dispatch(searchAction.setSelectedCategory(selectedCategory));
+    localStorage.setItem(
+      "category",
+      selectRef.current?.value ? selectRef.current.value : "all categories"
+    );
 
-    if (
-      searchText.trim().length === 0 &&
-      selectedCategory === "all categories"
-    ) {
+    const category = localStorage.getItem("category");
+
+    if (searchText.trim().length === 0 && category === "all categories") {
       navigate("/");
     } else if (
       searchText.trim().length === 0 &&
-      selectedCategory !== "all categories"
+      category !== "all categories"
     ) {
-      navigate(`/categories/${selectedCategory}`);
-    } else if (
-      searchText.trim().length > 0 &&
-      selectedCategory === "all categories"
-    ) {
-      dispatch(
-        searchAction.setSearchText({
-          text: searchText,
-          searchAllCategories: true,
-        })
-      );
+      navigate(`/categories/${category}`);
+    } else if (searchText.trim().length > 0 && category === "all categories") {
+      localStorage.setItem("searchText", searchText);
+      localStorage.setItem("searchAllCategories", "true");
 
-      navigate(`/categories/${selectedCategory}/search`);
-    } else if (
-      searchText.trim().length > 0 &&
-      selectedCategory !== "all categories"
-    ) {
-      dispatch(
-        searchAction.setSearchText({
-          text: searchText,
-          searchAllCategories: false,
-        })
-      );
+      navigate(`/categories/${category}/search`);
+    } else if (searchText.trim().length > 0 && category !== "all categories") {
+      localStorage.setItem("searchText", searchText);
+      localStorage.setItem("searchAllCategories", "false");
 
-      navigate(`/categories/${selectedCategory}/search`);
+      navigate(`/categories/${category}/search`);
     }
-
-    setSearchText("");
+    console.log(category);
   };
   return (
     <form
@@ -73,9 +59,9 @@ const Form: FC<{ value: string }> = ({ value }) => {
     >
       <div className="flex border rounded-full">
         <select
-          name=""
-          id=""
-          onChange={dropDownHandler}
+          name="select"
+          id="select"
+          ref={selectRef}
           className=" h-12 w-auto text-center text-sm outline-none  bg-gray-100 rounded-l-full border-r"
         >
           <option value="all categories">All Categories</option>

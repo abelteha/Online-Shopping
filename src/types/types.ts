@@ -24,8 +24,5 @@ export type Search = {
 };
 
 export type InitialSearchState = {
-  searchText: string;
-  searchAllCategories: boolean;
   searchResult: Products[];
-  selectedCategory: string;
 };
