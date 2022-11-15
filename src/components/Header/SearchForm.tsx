@@ -2,11 +2,14 @@ import { AiOutlineSearch } from "react-icons/ai";
 
 import React, { FC, useRef, useState } from "react";
 import { Catagories } from "../../model/catagories";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useAppDispatch } from "../../model/hooks";
+import { searchAction } from "../../redux/search-slice";
 
-const Form: FC<{ value: string }> = ({ value }) => {
+const SearchForm: FC<{ value: string }> = ({ value }) => {
   const [searchText, setSearchText] = useState<string>("");
   const selectRef = useRef<HTMLSelectElement>(null);
+  const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
 
@@ -16,7 +19,7 @@ const Form: FC<{ value: string }> = ({ value }) => {
 
   const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
-
+    dispatch(searchAction.toggleSearchBar(false));
     localStorage.setItem(
       "category",
       selectRef.current?.value ? selectRef.current.value : "all categories"
@@ -39,6 +42,7 @@ const Form: FC<{ value: string }> = ({ value }) => {
     } else if (searchText.trim().length > 0 && category !== "all categories") {
       localStorage.setItem("searchText", searchText);
       localStorage.setItem("searchAllCategories", "false");
+      //   dispatch(searchAction.searchResultReset());
 
       navigate(`/categories/${category}/search`);
     }
@@ -47,14 +51,14 @@ const Form: FC<{ value: string }> = ({ value }) => {
   return (
     <form
       onSubmit={submitHandler}
-      className={`${value} w-full hidden md:block`}
+      className={`${value} w-full px-[3%] md:px-0 `}
     >
       <div className="flex border rounded-full">
         <select
           name="select"
           id="select"
           ref={selectRef}
-          className=" h-12 w-auto text-center text-sm outline-none  bg-gray-100 rounded-l-full border-r"
+          className=" h-12 w-20 sm:w-auto text-center text-xs sm:text-sm outline-none  bg-gray-100 rounded-l-full border-r"
         >
           <option value="all categories">All Categories</option>
           {Catagories.map((cat) => (
@@ -78,4 +82,4 @@ const Form: FC<{ value: string }> = ({ value }) => {
     </form>
   );
 };
-export default Form;
+export default SearchForm;

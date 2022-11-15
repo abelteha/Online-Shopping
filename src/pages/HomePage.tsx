@@ -9,10 +9,10 @@ const HomePage = () => {
   const { data, error, isFetching } = useGetAllCategoriesQuery();
 
   if (isFetching) {
-    return <Loader clasName="w-full" />;
+    return <Loader clasName="md:w-full" />;
   }
   if (error) {
-    return <Error width={100} />;
+    return <Error />;
   }
   return (
     <div className="flex justify-center animate-slideup">

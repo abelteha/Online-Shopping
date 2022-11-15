@@ -3,6 +3,7 @@ import { InitialSearchState, Products, Search } from "../types/types";
 
 const initialState: InitialSearchState = {
   searchResult: [],
+  searchButtonPressed: false,
 };
 
 const searchSlice = createSlice({
@@ -11,6 +12,12 @@ const searchSlice = createSlice({
   reducers: {
     searchResults(state, action: PayloadAction<Products[]>) {
       state.searchResult = action.payload;
+    },
+    searchResultReset(state) {
+      state.searchResult = [];
+    },
+    toggleSearchBar(state, action: PayloadAction<boolean>) {
+      state.searchButtonPressed = action.payload;
     },
   },
 });

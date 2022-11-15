@@ -30,6 +30,8 @@ const SearchProducts = () => {
 
   useEffect(() => {
     setSearchParams({ q: searchText! });
+    console.log(filteredProducts);
+    console.log(search.searchResult);
   }, [search.searchResult]);
 
   if (error) {
@@ -59,7 +61,11 @@ const SearchProducts = () => {
           />
         ))}
       </ul>
-      {search.searchResult.length === 0 && filteredProducts.length === 0 ? (
+      {(
+        isAllCategories === "true"
+          ? search.searchResult.length === 0
+          : filteredProducts.length === 0
+      ) ? (
         <div className=" h-[100vh] bg-gray-100 pt-10 px-5">
           <p className="text-xl font-bold capitalize text-center pt-10 md:text-2xl ">
             no product found with the name "{searchText}" in {category}

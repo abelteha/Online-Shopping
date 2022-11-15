@@ -25,4 +25,5 @@ export type Search = {
 
 export type InitialSearchState = {
   searchResult: Products[];
+  searchButtonPressed: boolean;
 };
