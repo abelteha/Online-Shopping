@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as YUP from "yup";
-import { country_list } from "../../model/countries";
-import { InitialFormikSignUPState } from "../../types/types";
+import { country_list } from "../model/countries";
+import { InitialFormikSignUPState } from "../types/types";
+import { useAppDispatch } from "../model/hooks";
+import { setIsEditing } from "../redux/slices/auth-slice";
+import { usePrompt } from "../model/useBlocker";
+import { Link, useNavigate } from "react-router-dom";
 
 const InitialFormikValues: InitialFormikSignUPState = {
   firstName: "",
@@ -11,7 +15,10 @@ const InitialFormikValues: InitialFormikSignUPState = {
   password: "",
   country: "",
 };
-const Signup = () => {
+const SignupPage = () => {
+  const navigate = useNavigate();
+  const [isEditing, setIsEditing] = useState(false);
+  const dispatch = useAppDispatch();
   const formik = useFormik({
     initialValues: InitialFormikValues,
     validationSchema: YUP.object({
@@ -25,15 +32,31 @@ const Signup = () => {
         .required("Password must be provided!"),
       country: YUP.string().required("Please select your country!"),
     }),
-    onSubmit: (values, { setSubmitting }) => {},
+    onSubmit: (values, { setSubmitting }) => {
+      setIsEditing(false);
+    },
   });
+  useEffect(() => {
+    if (formik.submitCount > 0 && isEditing === false) {
+      navigate("/");
+    }
+  }, [isEditing]);
+  useEffect(() => {
+    if (formik.dirty) {
+      setIsEditing(true);
+    }
+  }, [formik.dirty]);
   const firstNErr = formik.touched.firstName && formik.errors.firstName;
   const lastNErr = formik.touched.lastName && formik.errors.lastName;
   const emailErr = formik.touched.email && formik.errors.email;
   const passwordErr = formik.touched.password && formik.errors.password;
   const countryErr = formik.touched.country && formik.errors.country;
+  usePrompt(
+    "You haven't finished filling the form, are you sure you want to leave this page?",
+    isEditing
+  );
   return (
-    <div className="bg-gray-100 p-8 px-5 sm:px-8 max-w-[25rem] mx-5 mt-[3rem] rounded-lg ">
+    <div className="bg-gray-100 p-8 px-5 sm:px-8 max-w-[30rem] mx-auto mt-[3rem] rounded-lg animate-slideup ">
       <h1 className="text-[#a75b29] text-2xl font-bold text-center mb-4">
         Signup
       </h1>
@@ -127,12 +150,15 @@ const Signup = () => {
         >
           Signup
         </button>
-        <p className="text-gray-400 text-sm mt-2 hover:text-[#C56E33] cursor-pointer">
+        <Link
+          to={"/signin"}
+          className="text-gray-400 text-sm mt-2 hover:text-[#C56E33] cursor-pointer block"
+        >
           login with existing user
-        </p>
+        </Link>
       </form>
     </div>
   );
 };
 
-export default Signup;
+export default SignupPage;

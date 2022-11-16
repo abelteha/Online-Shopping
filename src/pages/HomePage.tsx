@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import CategoryCard from "../components/Cards/CategoryCard";
 import Error from "../components/UI/Error";
 import Loader from "../components/UI/Loader";
-import { useGetAllCategoriesQuery } from "../redux/dummyJsonApi";
+import { useGetAllCategoriesQuery } from "../redux/api/dummyJsonApi";
 
 const HomePage = () => {
   const { data, error, isFetching } = useGetAllCategoriesQuery();

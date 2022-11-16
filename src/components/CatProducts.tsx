@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useLayoutEffect, useRef } from "react";
-import { useGetCategoryProductsQuery } from "../redux/dummyJsonApi";
+import { useGetCategoryProductsQuery } from "../redux/api/dummyJsonApi";
 import ProductCard from "./Cards/ProductCard";
 import Loader from "./UI/Loader";
 import Error from "./UI/Error";
 import { useDispatch } from "react-redux";
-import { ProductsAction } from "../redux/products-slice";
+import { ProductsAction } from "../redux/slices/products-slice";
 import { useAppDispatch } from "../model/hooks";
 
 const CategoryProducts = () => {

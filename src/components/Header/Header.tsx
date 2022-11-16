@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import SearchForm from "./SearchForm";
 import { Fragment, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../model/hooks";
-import { searchAction } from "../../redux/search-slice";
+import { searchAction } from "../../redux/slices/search-slice";
 import { Catagories } from "../../model/catagories";
 import CollabsibleMenu from "./CollabsibleMenu";
 
@@ -75,7 +75,7 @@ const Header = () => {
             <Link to={"/"} className="text-sm hover:text-[#a75b29] ">
               All Categories
             </Link>
-            <Link to={"/auth"} className="text-sm hover:text-[#a75b29]">
+            <Link to={"/signin"} className="text-sm hover:text-[#a75b29]">
               SignIn
             </Link>
             <Link to={"/"} className="text-sm hover:text-[#a75b29]">

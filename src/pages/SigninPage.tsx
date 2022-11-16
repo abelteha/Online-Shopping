@@ -1,12 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as YUP from "yup";
-import { InitialFormikSignInState } from "../../types/types";
+import { InitialFormikSignInState } from "../types/types";
+import { useAppDispatch, useAppSelector } from "../model/hooks";
+import {
+  forgotPasswordClicked,
+  setIsEditing,
+} from "../redux/slices/auth-slice";
+import { Link, useNavigate } from "react-router-dom";
+import { usePrompt } from "../model/useBlocker";
 const formikInitialValues: InitialFormikSignInState = {
   email: "",
   password: "",
 };
-const Signin = () => {
+const SigninPage = () => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const isEditing = useAppSelector((state) => state.authReducer.isEditing);
   const formik = useFormik({
     initialValues: formikInitialValues,
     validationSchema: YUP.object({
@@ -17,13 +27,30 @@ const Signin = () => {
         .min(6, "password must have atleast 6 characters!")
         .required("Password is required!"),
     }),
-    onSubmit: (values, { setSubmitting }) => {},
+    onSubmit: (values, { setSubmitting }) => {
+      dispatch(setIsEditing(false));
+    },
   });
+  useEffect(() => {
+    if (formik.submitCount > 0 && isEditing === false) {
+      navigate("/");
+    }
+  }, [isEditing]);
+  useEffect(() => {
+    if (formik.dirty) {
+      dispatch(setIsEditing(true));
+    }
+  }, [formik.dirty]);
 
   const emailErr = formik.touched.email && formik.errors.email;
   const passwordErr = formik.touched.password && formik.errors.password;
+
+  usePrompt(
+    "You haven't finished filling the form, are you sure you want to leave this page?",
+    isEditing
+  );
   return (
-    <div className="bg-gray-100 p-5 py-10 sm:p-10 max-w-[25rem] mx-5 mt-[5rem] rounded-lg">
+    <div className="bg-gray-100 p-5 py-10 sm:p-10 max-w-[30rem] mx-auto mt-[5rem] rounded-lg animate-slideup">
       <h1 className="text-[#a75b29] text-2xl font-bold text-center mb-4">
         Signin
       </h1>
@@ -51,9 +78,12 @@ const Signin = () => {
           onChange={formik.handleChange}
           className="block h-[3rem] w-full border rounded-lg pl-4 mt-4 text-sm sm:text-base outline-[#a75b29]"
         />
-        <p className="text-gray-500 italic text-right hover:text-[#C56E33] cursor-pointer mb-2 text-sm sm:text-base">
+        <Link
+          to={"forgotPassword"}
+          className="text-gray-500 italic text-right hover:text-[#C56E33] cursor-pointer mb-2 text-sm sm:text-base block"
+        >
           forgot password?
-        </p>
+        </Link>
 
         {passwordErr && (
           <p className="text-red-600 text-center">{formik.errors.password}</p>
@@ -64,9 +94,15 @@ const Signin = () => {
         >
           Login
         </button>
+        <Link
+          to={"/signup"}
+          className="text-gray-400 text-sm mt-2 hover:text-[#C56E33] cursor-pointer block"
+        >
+          Create new account
+        </Link>
       </form>
     </div>
   );
 };
 
-export default Signin;
+export default SigninPage;

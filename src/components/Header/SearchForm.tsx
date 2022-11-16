@@ -4,7 +4,7 @@ import React, { FC, useRef, useState } from "react";
 import { Catagories } from "../../model/catagories";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAppDispatch } from "../../model/hooks";
-import { searchAction } from "../../redux/search-slice";
+import { searchAction } from "../../redux/slices/search-slice";
 
 const SearchForm: FC<{ value: string }> = ({ value }) => {
   const [searchText, setSearchText] = useState<string>("");

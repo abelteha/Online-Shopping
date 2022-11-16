@@ -2,7 +2,7 @@ import { FC } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../model/hooks";
-import { ProductsAction } from "../../redux/products-slice";
+import { ProductsAction } from "../../redux/slices/products-slice";
 import Rating from "../UI/Rating";
 
 const ProductCard: FC<{

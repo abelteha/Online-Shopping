@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { useGetCategoryProductsQuery } from "../../redux/dummyJsonApi";
+import { useGetCategoryProductsQuery } from "../../redux/api/dummyJsonApi";
 import { Link } from "react-router-dom";
 
 const CategoryCard: FC<{ title: string }> = ({ title }) => {

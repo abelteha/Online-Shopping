@@ -3,7 +3,7 @@ import Rating from "../components/UI/Rating";
 import { Products } from "../types/types";
 import { BsCartPlusFill } from "react-icons/bs";
 
-import { ProductsAction } from "../redux/products-slice";
+import { ProductsAction } from "../redux/slices/products-slice";
 import Galary from "../components/Product/Galary";
 import Feedback from "../components/Product/Feedback";
 import { useAppDispatch, useAppSelector } from "../model/hooks";

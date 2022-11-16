@@ -1,14 +1,14 @@
 import { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../model/hooks";
-import { useGetSearchedItemQuery } from "../redux/dummyJsonApi";
+import { useGetSearchedItemQuery } from "../redux/api/dummyJsonApi";
 import ProductCard from "../components/Cards/ProductCard";
 
 import Loader from "../components/UI/Loader";
 import Error from "../components/UI/Error";
-import { searchAction } from "../redux/search-slice";
+import { searchAction } from "../redux/slices/search-slice";
 
 import { useSearchParams } from "react-router-dom";
-import { ProductsAction } from "../redux/products-slice";
+import { ProductsAction } from "../redux/slices/products-slice";
 
 const SearchProducts = () => {
   const search = useAppSelector((state) => state.searchReducer);
