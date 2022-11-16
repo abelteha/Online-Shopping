@@ -27,3 +27,8 @@ export type InitialSearchState = {
   searchResult: Products[];
   searchButtonPressed: boolean;
 };
+
+export type InitialFormikSignInState = {
+  email: string;
+  password: string;
+};

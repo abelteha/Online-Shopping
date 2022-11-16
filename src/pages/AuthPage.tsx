@@ -1,7 +1,12 @@
-import React from "react";
+import React, { Fragment } from "react";
+import Signin from "../components/Auth/Signin";
 
 const AuthPage = () => {
-  return <div></div>;
+  return (
+    <Fragment>
+      <Signin />
+    </Fragment>
+  );
 };
 
 export default AuthPage;
