@@ -2,12 +2,11 @@ import React from "react";
 import { useFormik } from "formik";
 import * as YUP from "yup";
 import { InitialFormikSignInState } from "../../types/types";
-
+const formikInitialValues: InitialFormikSignInState = {
+  email: "",
+  password: "",
+};
 const Signin = () => {
-  const formikInitialValues: InitialFormikSignInState = {
-    email: "",
-    password: "",
-  };
   const formik = useFormik({
     initialValues: formikInitialValues,
     validationSchema: YUP.object({
@@ -37,7 +36,7 @@ const Signin = () => {
           value={formik.values.email}
           onBlur={formik.handleBlur}
           onChange={formik.handleChange}
-          className="block h-[3rem] w-full border rounded-lg pl-4 my-4 text-sm sm:text-base"
+          className="block h-[3rem] w-full border rounded-lg pl-4 my-4 text-sm sm:text-base outline-[#a75b29]"
         />
         {emailErr && (
           <p className="text-red-600 text-center">{formik.errors.email}</p>
@@ -50,7 +49,7 @@ const Signin = () => {
           value={formik.values.password}
           onBlur={formik.handleBlur}
           onChange={formik.handleChange}
-          className="block h-[3rem] w-full border rounded-lg pl-4 mt-4 text-sm sm:text-base"
+          className="block h-[3rem] w-full border rounded-lg pl-4 mt-4 text-sm sm:text-base outline-[#a75b29]"
         />
         <p className="text-gray-500 italic text-right hover:text-[#C56E33] cursor-pointer mb-2 text-sm sm:text-base">
           forgot password?

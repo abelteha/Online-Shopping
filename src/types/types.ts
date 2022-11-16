@@ -32,3 +32,10 @@ export type InitialFormikSignInState = {
   email: string;
   password: string;
 };
+export type InitialFormikSignUPState = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  country: string;
+};
