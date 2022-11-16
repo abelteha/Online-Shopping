@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Header from "./components/Header/Header";
 import AuthPage from "./pages/AuthPage";
+import CartPage from "./pages/CartPage";
 
 import CategoryProductsPage from "./pages/CategoryProductPage";
 import HomePage from "./pages/HomePage";
@@ -14,6 +15,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/auth" element={<AuthPage />} />
+        <Route path="/cart" element={<CartPage />} />
         <Route path="categories/:categoryID">
           <Route index={true} element={<CategoryProductsPage />} />
           <Route index={false} path=":product" element={<ProductDetail />} />
