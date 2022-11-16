@@ -1,5 +1,4 @@
-import { Fragment, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Fragment, useEffect, useRef, useState } from "react";
 import Rating from "../components/UI/Rating";
 import { Products } from "../types/types";
 import { BsCartPlusFill } from "react-icons/bs";
@@ -10,20 +9,35 @@ import Feedback from "../components/Product/Feedback";
 import { useAppDispatch, useAppSelector } from "../model/hooks";
 
 const ProductDetail = () => {
-  const param = useParams();
+  const divRef = useRef<HTMLDivElement>(null);
+
   const dispatch = useAppDispatch();
   const product: Products = JSON.parse(localStorage.getItem("SingleProduct")!);
   const activeImg: string = useAppSelector(
     (state) => state.productReducer.activeImg
   );
+  const [index, setIndex] = useState<number>(product?.images.length - 1);
 
   useEffect(() => {
     dispatch(ProductsAction.setDefaultActiveImg());
   }, []);
+  useEffect(() => {
+    if (divRef.current) {
+      divRef.current.scrollTop = 0;
+    }
+  });
 
+  const radioButtonCheckHandler = (img: string, i: number) => {
+    dispatch(ProductsAction.setActiveImg(img));
+    setIndex(i);
+    console.log(product.images[i]);
+  };
   return (
     <Fragment>
-      <div className="flex  flex-col justify-center py-16 md:flex-row md:justify-between gap-10  animate-slideup  bg-gray-50  ">
+      <div
+        ref={divRef}
+        className="flex  flex-col justify-center py-16 md:flex-row md:justify-between gap-10  animate-slideup  bg-gray-50  "
+      >
         <div className="flex  flex-1 flex-col justify-center items-center md:ml-4">
           <img
             src={activeImg}
@@ -37,8 +51,10 @@ const ProductDetail = () => {
                   type="radio"
                   name="radio"
                   value={i}
-                  onChange={() => dispatch(ProductsAction.setActiveImg(img))}
+                  onChange={() => radioButtonCheckHandler(img, i)!}
                   className="radioInput absolute opacity-0 w-0 h-0 cursor-pointer"
+                  defaultChecked={true}
+                  checked={i === index}
                 />
                 <img
                   src={img}

@@ -1,17 +1,16 @@
-import { Fragment, useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../model/hooks";
 import { useGetSearchedItemQuery } from "../redux/dummyJsonApi";
 import ProductCard from "../components/Cards/ProductCard";
-import SideBar from "../components/SideBar";
+
 import Loader from "../components/UI/Loader";
 import Error from "../components/UI/Error";
 import { searchAction } from "../redux/search-slice";
-import { iteratorSymbol } from "immer/dist/internal";
+
 import { useSearchParams } from "react-router-dom";
 import { ProductsAction } from "../redux/products-slice";
 
 const SearchProducts = () => {
-  const divRef = useRef<HTMLDivElement>(null);
   const search = useAppSelector((state) => state.searchReducer);
 
   const searchText = localStorage.getItem("searchText");
