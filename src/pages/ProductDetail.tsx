@@ -32,6 +32,7 @@ const ProductDetail = () => {
     setIndex(i);
     console.log(product.images[i]);
   };
+  const addToCartHandler = () => {};
   return (
     <Fragment>
       <div
@@ -103,7 +104,10 @@ const ProductDetail = () => {
                 </tr>
               </tbody>
             </table>
-            <button className="border-none px-5 py-2 hover:bg-[#a75b29] bg-[#C56E33] text-white rounded-lg w-[10rem] mt-6">
+            <button
+              className="border-none px-5 py-2 hover:bg-[#a75b29] bg-[#C56E33] text-white rounded-lg w-[10rem] mt-6"
+              onClick={addToCartHandler}
+            >
               Add To Cart <BsCartPlusFill className="inline ml-1" />
             </button>
           </div>

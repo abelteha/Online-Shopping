@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../model/hooks";
 import { useGetSearchedItemQuery } from "../redux/dummyJsonApi";
 import ProductCard from "../components/Cards/ProductCard";
@@ -17,6 +17,7 @@ const SearchProducts = () => {
   const isAllCategories = localStorage.getItem("searchAllCategories");
   const category = localStorage.getItem("category");
   const dispatch = useAppDispatch();
+  const divRef = useRef<HTMLDivElement>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   // const [data]
 
@@ -29,9 +30,13 @@ const SearchProducts = () => {
 
   useEffect(() => {
     setSearchParams({ q: searchText! });
-    console.log(filteredProducts);
-    console.log(search.searchResult);
   }, [search.searchResult]);
+
+  useEffect(() => {
+    if (divRef.current) {
+      divRef.current.scrollTop = 0;
+    }
+  });
 
   if (error) {
     return <Error />;
@@ -42,7 +47,10 @@ const SearchProducts = () => {
     dispatch(ProductsAction.setNewCategoryProducts(data?.products!));
   }
   return (
-    <div className="flex-1 flex  sm:block justify-center overflow-scroll ">
+    <div
+      ref={divRef}
+      className="flex-1 flex  sm:block justify-center overflow-scroll "
+    >
       <ul>
         {(isAllCategories === "true"
           ? search.searchResult
