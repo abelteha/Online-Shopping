@@ -3,12 +3,12 @@ import { useFormik } from "formik";
 import * as YUP from "yup";
 import { InitialFormikSignInState } from "../types/types";
 import { useAppDispatch, useAppSelector } from "../model/hooks";
-import {
-  forgotPasswordClicked,
-  setIsEditing,
-} from "../redux/slices/auth-slice";
+import { resetSuccess, setIsEditing } from "../redux/slices/auth/auth-slice";
 import { Link, useNavigate } from "react-router-dom";
 import { usePrompt } from "../model/useBlocker";
+import Loader from "../components/UI/Loader";
+import SmallLoader from "../components/UI/SmallLoader";
+import { signIn } from "../redux/slices/auth/async-thunks";
 const formikInitialValues: InitialFormikSignInState = {
   email: "",
   password: "",
@@ -16,7 +16,8 @@ const formikInitialValues: InitialFormikSignInState = {
 const SigninPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const isEditing = useAppSelector((state) => state.authReducer.isEditing);
+  const auth = useAppSelector((state) => state.authReducer);
+
   const formik = useFormik({
     initialValues: formikInitialValues,
     validationSchema: YUP.object({
@@ -29,13 +30,20 @@ const SigninPage = () => {
     }),
     onSubmit: (values, { setSubmitting }) => {
       dispatch(setIsEditing(false));
+      dispatch(
+        signIn({
+          email: values.email,
+          password: values.password,
+          returnSecureToken: true,
+        })
+      );
     },
   });
   useEffect(() => {
-    if (formik.submitCount > 0 && isEditing === false) {
-      navigate("/");
-    }
-  }, [isEditing]);
+    setTimeout(() => {
+      dispatch(resetSuccess());
+    }, 1500);
+  }, [auth.success]);
   useEffect(() => {
     if (formik.dirty) {
       dispatch(setIsEditing(true));
@@ -47,7 +55,7 @@ const SigninPage = () => {
 
   usePrompt(
     "You haven't finished filling the form, are you sure you want to leave this page?",
-    isEditing
+    auth.isEditing
   );
   return (
     <div className="bg-gray-100 p-5 py-10 sm:p-10 max-w-[30rem] mx-auto mt-[5rem] rounded-lg animate-slideup">
@@ -84,12 +92,11 @@ const SigninPage = () => {
         >
           forgot password?
         </Link>
-
         {passwordErr && (
           <p className="text-red-600 text-center">{formik.errors.password}</p>
         )}
         <button
-          className="border-none px-5 py-2 hover:bg-[#a75b29] bg-[#C56E33] text-white rounded-lg w-[10rem] mt-4"
+          className="border-none px-5 py-2 hover:bg-[#a75b29] bg-[#C56E33] text-white rounded-lg w-[10rem] mt-4 "
           onClick={() => {}}
         >
           Login
@@ -99,7 +106,14 @@ const SigninPage = () => {
           className="text-gray-400 text-sm mt-2 hover:text-[#C56E33] cursor-pointer block"
         >
           Create new account
-        </Link>
+        </Link>{" "}
+        {auth.isLoading && <SmallLoader />}
+        {auth.error && (
+          <p className="text-red-600 text-center mt-2">{auth.error}</p>
+        )}
+        {auth.success && (
+          <p className="text-green-500 text-center mt-2">success!</p>
+        )}
       </form>
     </div>
   );

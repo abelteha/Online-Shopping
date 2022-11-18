@@ -3,10 +3,13 @@ import { useFormik } from "formik";
 import * as YUP from "yup";
 import { country_list } from "../model/countries";
 import { InitialFormikSignUPState } from "../types/types";
-import { useAppDispatch } from "../model/hooks";
-import { setIsEditing } from "../redux/slices/auth-slice";
+import { useAppDispatch, useAppSelector } from "../model/hooks";
+
 import { usePrompt } from "../model/useBlocker";
 import { Link, useNavigate } from "react-router-dom";
+import { setIsEditing } from "../redux/slices/auth/auth-slice";
+import { signUp } from "../redux/slices/auth/async-thunks";
+import SmallLoader from "../components/UI/SmallLoader";
 
 const InitialFormikValues: InitialFormikSignUPState = {
   firstName: "",
@@ -17,7 +20,7 @@ const InitialFormikValues: InitialFormikSignUPState = {
 };
 const SignupPage = () => {
   const navigate = useNavigate();
-  const [isEditing, setIsEditing] = useState(false);
+  const auth = useAppSelector((state) => state.authReducer);
   const dispatch = useAppDispatch();
   const formik = useFormik({
     initialValues: InitialFormikValues,
@@ -33,17 +36,24 @@ const SignupPage = () => {
       country: YUP.string().required("Please select your country!"),
     }),
     onSubmit: (values, { setSubmitting }) => {
-      setIsEditing(false);
+      dispatch(setIsEditing(false));
+      dispatch(
+        signUp({
+          email: values.email,
+          password: values.password,
+          returnSecureToken: true,
+        })
+      );
     },
   });
   useEffect(() => {
-    if (formik.submitCount > 0 && isEditing === false) {
-      navigate("/");
+    if (formik.submitCount > 0 && auth.isEditing === false) {
+      // navigate("/signin");
     }
-  }, [isEditing]);
+  }, [auth.isEditing]);
   useEffect(() => {
     if (formik.dirty) {
-      setIsEditing(true);
+      dispatch(setIsEditing(true));
     }
   }, [formik.dirty]);
   const firstNErr = formik.touched.firstName && formik.errors.firstName;
@@ -53,7 +63,7 @@ const SignupPage = () => {
   const countryErr = formik.touched.country && formik.errors.country;
   usePrompt(
     "You haven't finished filling the form, are you sure you want to leave this page?",
-    isEditing
+    auth.isEditing
   );
   return (
     <div className="bg-gray-100 p-8 px-5 sm:px-8 max-w-[30rem] mx-auto mt-[3rem] rounded-lg animate-slideup ">
@@ -156,6 +166,13 @@ const SignupPage = () => {
         >
           login with existing user
         </Link>
+        {auth.isLoading && <SmallLoader />}
+        {auth.error && (
+          <p className="text-red-600 text-center mt-2">{auth.error}</p>
+        )}
+        {auth.success && (
+          <p className="text-green-500 text-center mt-2">success!</p>
+        )}
       </form>
     </div>
   );

@@ -66,6 +66,25 @@
     box-shadow: 0 2.5em 0 0;
   }
 }
+.small-loader {
+  width: 40px;
+  height: 40px;
+  border: 5px dotted #c56e33;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  animation: rotation 2s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
 .hamburger {
   cursor: pointer;

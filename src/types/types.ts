@@ -1,3 +1,5 @@
+import { boolean } from "yup";
+
 export type Products = {
   id: number;
   title: string;
@@ -38,4 +40,45 @@ export type InitialFormikSignUPState = {
   email: string;
   password: string;
   country: string;
+};
+
+export type SignUpResponse = {
+  idToken: string;
+  email: string;
+  kind: string;
+  refreshToken: string;
+  expiresIn: string;
+  localId: string;
+};
+export type SignUporInRequest = {
+  email: string;
+  password: string;
+  returnSecureToken: boolean;
+};
+
+export type ForgotPasswordRequest = {
+  requestType: string;
+  email: string;
+};
+
+export type SignInResponse = {
+  kind: string;
+  displayName: string;
+  idToken: string;
+  email: string;
+  refreshToken: string;
+  expiresIn: string;
+  localId: string;
+  registered: boolean;
+};
+
+export type InitialAuthState = {
+  isAuthenticated: boolean;
+  isEditing: boolean;
+  isLoading: boolean;
+  error: string | null;
+  success: boolean;
+  data: SignInResponse | SignUpResponse | null;
+  token: null;
+  user: null;
 };

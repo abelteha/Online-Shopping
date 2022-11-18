@@ -3,7 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { dummyJsonApi } from "./api/dummyJsonApi";
 import products from "./slices/products-slice";
 import searchReducer from "./slices/search-slice";
-import authReducer from "./slices/auth-slice";
+import authReducer from "./slices/auth/auth-slice";
 
 export const store = configureStore({
   reducer: {
