@@ -4,7 +4,8 @@ import { InitialAuthState } from "../../../types/types";
 import { forgotPassword, signIn, signUp } from "./async-thunks";
 
 const InitialState: InitialAuthState = {
-  isAuthenticated: false,
+  isAuthenticated: !!localStorage.getItem("token"),
+  timeToExpire: null,
   isEditing: false,
   isLoading: false,
   error: null,
@@ -24,13 +25,17 @@ const authSlice = createSlice({
     resetSuccess(state) {
       state.success = false;
     },
+    logOut(state) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("expireOn");
+      state.isAuthenticated = !!localStorage.getItem("token");
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(signIn.pending, (state) => {
       state.error = null;
       state.data = null;
       state.isLoading = true;
-      // console.log(state.isLoading);
     });
     builder.addCase(signIn.rejected, (state, action: PayloadAction<any>) => {
       state.isLoading = false;
@@ -40,6 +45,13 @@ const authSlice = createSlice({
       state.isLoading = false;
       state.data = action.payload;
       state.success = true;
+      localStorage.setItem("token", state.data?.idToken!);
+      state.isAuthenticated = !!localStorage.getItem("token");
+      const tokenSetTime = new Date().getTime();
+      const tokenExpiringTime = tokenSetTime + 3600000;
+      const toRealTime = new Date(tokenExpiringTime);
+
+      localStorage.setItem("expireOn", toRealTime.toISOString());
     });
     builder.addCase(signUp.pending, (state) => {
       state.error = null;
@@ -78,6 +90,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { setIsEditing, resetSuccess } = authSlice.actions;
+export const { setIsEditing, resetSuccess, logOut } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -1,6 +1,7 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Header from "./components/Header/Header";
+import { useAppDispatch, useAppSelector } from "./model/hooks";
 
 import CartPage from "./pages/CartPage";
 
@@ -11,7 +12,23 @@ import ProductDetail from "./pages/ProductDetail";
 import SearchPage from "./pages/SearchPage";
 import SigninPage from "./pages/SigninPage";
 import SignupPage from "./pages/SignupPage";
+import { logOut, setTimer } from "./redux/slices/auth/auth-slice";
 const App = () => {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const time = localStorage.getItem("expireOn")!;
+    const currentTime = new Date().getTime();
+
+    if (time) {
+      const toMiliseconds = new Date(time).getTime();
+      const timeLeft = toMiliseconds - currentTime;
+      setTimeout(() => {
+        dispatch(logOut());
+      }, timeLeft);
+      console.log(timeLeft);
+    }
+  });
   return (
     <Fragment>
       <Header />

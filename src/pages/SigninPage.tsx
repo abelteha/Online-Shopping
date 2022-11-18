@@ -40,6 +40,9 @@ const SigninPage = () => {
     },
   });
   useEffect(() => {
+    if (auth.success === true) {
+      navigate("/");
+    }
     setTimeout(() => {
       dispatch(resetSuccess());
     }, 1500);

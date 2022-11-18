@@ -74,11 +74,12 @@ export type SignInResponse = {
 
 export type InitialAuthState = {
   isAuthenticated: boolean;
+  timeToExpire: number | null;
   isEditing: boolean;
   isLoading: boolean;
   error: string | null;
   success: boolean;
   data: SignInResponse | SignUpResponse | null;
-  token: null;
+  token: string | null;
   user: null;
 };

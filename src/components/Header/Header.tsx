@@ -8,11 +8,13 @@ import SearchForm from "./SearchForm";
 import { Fragment, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../model/hooks";
 import { searchAction } from "../../redux/slices/search-slice";
-import { Catagories } from "../../model/catagories";
+
 import CollabsibleMenu from "./CollabsibleMenu";
+import { logOut } from "../../redux/slices/auth/auth-slice";
 
 const Header = () => {
   const navigate = useNavigate();
+  const auth = useAppSelector((state) => state.authReducer);
   const dispatch = useAppDispatch();
   const [toggleOpen, setToggleOpen] = useState(false);
   const searchPressed = useAppSelector(
@@ -75,12 +77,20 @@ const Header = () => {
             <Link to={"/"} className="text-sm hover:text-[#a75b29] ">
               All Categories
             </Link>
-            <Link to={"/signin"} className="text-sm hover:text-[#a75b29]">
-              SignIn
-            </Link>
-            <Link to={"/"} className="text-sm hover:text-[#a75b29]">
-              Logout
-            </Link>
+
+            {auth.isAuthenticated ? (
+              <Link
+                to={"/"}
+                className="text-sm hover:text-[#a75b29]"
+                onClick={() => dispatch(logOut())}
+              >
+                Logout
+              </Link>
+            ) : (
+              <Link to={"/signin"} className="text-sm hover:text-[#a75b29]">
+                SignIn
+              </Link>
+            )}
           </div>
         </div>
       </div>
