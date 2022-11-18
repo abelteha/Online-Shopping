@@ -56,9 +56,11 @@ const Header = () => {
               className="md:w-10 md:h-10 w-8 h-8 text-[#a75b29]"
               onClick={() => navigate("/cart")}
             />
-            <div className="w-7 h-7 bg-[#ffad76] rounded-full">
-              <p className="text-center mt-[2px]">0</p>
-            </div>
+            {auth.isAuthenticated && (
+              <div className="w-7 h-7 bg-[#ffad76] rounded-full">
+                <p className="text-center mt-[2px]">0</p>
+              </div>
+            )}
           </div>
         </div>
         <div className="flex border-b-2 py-1 px-5 bg-gray-300/50 justify-between md:justify-end ">

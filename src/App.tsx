@@ -12,7 +12,7 @@ import ProductDetail from "./pages/ProductDetail";
 import SearchPage from "./pages/SearchPage";
 import SigninPage from "./pages/SigninPage";
 import SignupPage from "./pages/SignupPage";
-import { logOut, setTimer } from "./redux/slices/auth/auth-slice";
+import { logOut } from "./redux/slices/auth/auth-slice";
 const App = () => {
   const dispatch = useAppDispatch();
 
