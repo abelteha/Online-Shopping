@@ -43,9 +43,6 @@ const SigninPage = () => {
     if (auth.success === true) {
       navigate("/");
     }
-    setTimeout(() => {
-      dispatch(resetSuccess());
-    }, 1500);
   }, [auth.success]);
   useEffect(() => {
     if (formik.dirty) {

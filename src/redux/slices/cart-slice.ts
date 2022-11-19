@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   uid: "",
   userName: "",
+  image: "",
   cart: [],
 };
 const userSlice = createSlice({

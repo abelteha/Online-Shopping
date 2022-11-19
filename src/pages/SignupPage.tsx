@@ -4,10 +4,12 @@ import * as YUP from "yup";
 import { country_list } from "../model/countries";
 import { InitialFormikSignUPState } from "../types/types";
 import { useAppDispatch, useAppSelector } from "../model/hooks";
+import { storage } from "../firebase";
+import { ref, uploadBytes } from "firebase/storage";
 
 import { usePrompt } from "../model/useBlocker";
 import { Link, useNavigate } from "react-router-dom";
-import { setIsEditing } from "../redux/slices/auth/auth-slice";
+import { resetSuccess, setIsEditing } from "../redux/slices/auth/auth-slice";
 import { signUp } from "../redux/slices/auth/async-thunks";
 import SmallLoader from "../components/UI/SmallLoader";
 
@@ -47,6 +49,11 @@ const SignupPage = () => {
           returnSecureToken: true,
         })
       );
+      const imageRef = ref(storage, `images/${values.email}`);
+      uploadBytes(imageRef, image).then(() => alert("Image Uploaded!"));
+      setTimeout(() => {
+        dispatch(resetSuccess());
+      }, 1500);
     },
   });
   useEffect(() => {
