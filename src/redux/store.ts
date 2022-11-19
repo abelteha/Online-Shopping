@@ -4,6 +4,7 @@ import { dummyJsonApi } from "./api/dummyJsonApi";
 import products from "./slices/products-slice";
 import searchReducer from "./slices/search-slice";
 import authReducer from "./slices/auth/auth-slice";
+import userReducer from "./slices/user-slice";
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     productReducer: products,
     searchReducer: searchReducer,
     authReducer: authReducer,
+    userReducer: userReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(dummyJsonApi.middleware),

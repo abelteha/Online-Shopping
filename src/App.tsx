@@ -1,6 +1,9 @@
+import { getDownloadURL, list, listAll, ref } from "firebase/storage";
 import { Fragment, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Header from "./components/Header/Header";
+import { storage } from "./firebase";
+
 import { useAppDispatch, useAppSelector } from "./model/hooks";
 
 import CartPage from "./pages/CartPage";
@@ -13,8 +16,10 @@ import SearchPage from "./pages/SearchPage";
 import SigninPage from "./pages/SigninPage";
 import SignupPage from "./pages/SignupPage";
 import { logOut } from "./redux/slices/auth/auth-slice";
+import { setUserImage } from "./redux/slices/user-slice";
 const App = () => {
   const dispatch = useAppDispatch();
+  const imageListRef = ref(storage, "images/");
 
   useEffect(() => {
     const time = localStorage.getItem("expireOn")!;
@@ -29,6 +34,25 @@ const App = () => {
       console.log(timeLeft);
     }
   });
+
+  useEffect(() => {
+    // dispatch(resetImages());
+    // listAll(imageListRef).then((res) => {
+    //   res.items.forEach((item) => {
+    //     getDownloadURL(item).then((url) => {
+    //       dispatch(setImageList({ name: item.fullPath.slice(7), url: url }));
+    //     });
+    //   });
+    // });
+    const imageRef = ref(
+      storage,
+      `images/${localStorage.getItem("userEmail")}`
+    );
+    list(imageRef).then((res) =>
+      getDownloadURL(imageRef).then((res) => dispatch(setUserImage(res)))
+    );
+  }, []);
+
   return (
     <Fragment>
       <Header />

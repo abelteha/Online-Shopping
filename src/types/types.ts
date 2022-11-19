@@ -83,3 +83,16 @@ export type InitialAuthState = {
   token: string | null;
   user: null;
 };
+
+export type InitialUserState = {
+  uid: string;
+  userName: string;
+  email: string;
+  image: string;
+  cart: any[];
+};
+
+export type imagesFetchType = {
+  name: string;
+  url: string;
+};

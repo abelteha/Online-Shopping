@@ -5,7 +5,7 @@ import { country_list } from "../model/countries";
 import { InitialFormikSignUPState } from "../types/types";
 import { useAppDispatch, useAppSelector } from "../model/hooks";
 import { storage } from "../firebase";
-import { ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, listAll, ref, uploadBytes } from "firebase/storage";
 
 import { usePrompt } from "../model/useBlocker";
 import { Link, useNavigate } from "react-router-dom";
@@ -26,6 +26,7 @@ const SignupPage = () => {
   const navigate = useNavigate();
   const auth = useAppSelector((state) => state.authReducer);
   const dispatch = useAppDispatch();
+  const imageListRef = ref(storage, "images/");
   const formik = useFormik({
     initialValues: InitialFormikValues,
     validationSchema: YUP.object({
@@ -49,18 +50,20 @@ const SignupPage = () => {
           returnSecureToken: true,
         })
       );
-      const imageRef = ref(storage, `images/${values.email}`);
-      uploadBytes(imageRef, image).then(() => alert("Image Uploaded!"));
+      if (auth.success === true) {
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (auth.success === true) {
+      const imageRef = ref(storage, `images/${formik.values.email}`);
+      uploadBytes(imageRef, image!).then(() => alert("Image uploaded"));
       setTimeout(() => {
         dispatch(resetSuccess());
       }, 1500);
-    },
-  });
-  useEffect(() => {
-    if (formik.submitCount > 0 && auth.isEditing === false) {
-      // navigate("/signin");
     }
-  }, [auth.isEditing]);
+  }, [auth.success]);
   useEffect(() => {
     if (formik.dirty) {
       dispatch(setIsEditing(true));

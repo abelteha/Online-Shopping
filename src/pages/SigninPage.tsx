@@ -9,6 +9,7 @@ import { usePrompt } from "../model/useBlocker";
 import Loader from "../components/UI/Loader";
 import SmallLoader from "../components/UI/SmallLoader";
 import { signIn } from "../redux/slices/auth/async-thunks";
+import { setUserImage } from "../redux/slices/user-slice";
 const formikInitialValues: InitialFormikSignInState = {
   email: "",
   password: "",
@@ -41,7 +42,11 @@ const SigninPage = () => {
   });
   useEffect(() => {
     if (auth.success === true) {
+      localStorage.setItem("userEmail", formik.values.email);
       navigate("/");
+      setTimeout(() => {
+        dispatch(resetSuccess());
+      }, 1500);
     }
   }, [auth.success]);
   useEffect(() => {

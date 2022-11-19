@@ -28,6 +28,7 @@ const authSlice = createSlice({
     logOut(state) {
       localStorage.removeItem("token");
       localStorage.removeItem("expireOn");
+      localStorage.removeItem("userEmail");
       state.isAuthenticated = !!localStorage.getItem("token");
     },
   },
