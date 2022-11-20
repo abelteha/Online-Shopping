@@ -3,13 +3,18 @@ import { useFormik } from "formik";
 import * as YUP from "yup";
 import { InitialFormikSignInState } from "../types/types";
 import { useAppDispatch, useAppSelector } from "../model/hooks";
-import { resetSuccess, setIsEditing } from "../redux/slices/auth/auth-slice";
+import {
+  resetError,
+  resetSuccess,
+  setIsEditing,
+} from "../redux/slices/auth/auth-slice";
 import { Link, useNavigate } from "react-router-dom";
 import { usePrompt } from "../model/useBlocker";
 import Loader from "../components/UI/Loader";
 import SmallLoader from "../components/UI/SmallLoader";
 import { signIn } from "../redux/slices/auth/async-thunks";
 import { setUserImage } from "../redux/slices/user-slice";
+import { fetchUser } from "../redux/api/apiEndpoingRequests";
 const formikInitialValues: InitialFormikSignInState = {
   email: "",
   password: "",
@@ -29,7 +34,7 @@ const SigninPage = () => {
         .min(6, "password must have atleast 6 characters!")
         .required("Password is required!"),
     }),
-    onSubmit: (values, { setSubmitting }) => {
+    onSubmit: (values) => {
       dispatch(setIsEditing(false));
       dispatch(
         signIn({
@@ -40,15 +45,7 @@ const SigninPage = () => {
       );
     },
   });
-  useEffect(() => {
-    if (auth.success === true) {
-      localStorage.setItem("userEmail", formik.values.email);
-      navigate("/");
-      setTimeout(() => {
-        dispatch(resetSuccess());
-      }, 1500);
-    }
-  }, [auth.success]);
+
   useEffect(() => {
     if (formik.dirty) {
       dispatch(setIsEditing(true));

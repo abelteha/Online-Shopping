@@ -79,11 +79,13 @@ const Header = () => {
             )}
             <AiOutlineShoppingCart
               className="md:w-10 md:h-10 w-8 h-8 text-[#a75b29]"
-              onClick={() => navigate("/cart")}
+              onClick={() =>
+                auth.isAuthenticated ? navigate("/cart") : navigate("/signin")
+              }
             />
             {auth.isAuthenticated && (
               <div className="w-7 h-7 bg-[#ffad76] rounded-full">
-                <p className="text-center mt-[2px]">0</p>
+                <p className="text-center mt-[2px]">{user.totalCartItems}</p>
               </div>
             )}
           </div>
@@ -100,7 +102,7 @@ const Header = () => {
             <span className="hamburger-middle"></span>
             <span className="hamburger-bottom"></span>
           </button>
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-3 sm:gap-5 ">
             <Link to={"/"} className="text-sm hover:text-[#a75b29] ">
               All Categories
             </Link>
@@ -119,8 +121,12 @@ const Header = () => {
               </Link>
             )}
             {auth.isAuthenticated && (
-              <div className="w-10 h-10 bg-gray-400 rounded-full overflow-hidden">
-                <img src={user.image} alt="" className="object-fill " />
+              <div className="w-10 h-10 bg-gray-400 rounded-full overflow-hidden ">
+                <img
+                  src={user.image}
+                  alt=""
+                  className="w-10 h-10 object-cover"
+                />
               </div>
             )}
           </div>

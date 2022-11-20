@@ -25,11 +25,17 @@ const authSlice = createSlice({
     resetSuccess(state) {
       state.success = false;
     },
+
+    resetError(state) {
+      state.error = null;
+    },
     logOut(state) {
       localStorage.removeItem("token");
       localStorage.removeItem("expireOn");
       localStorage.removeItem("userEmail");
-      state.isAuthenticated = !!localStorage.getItem("token");
+      state.isAuthenticated = false;
+
+      console.log(state.success);
     },
   },
   extraReducers: (builder) => {
@@ -37,6 +43,7 @@ const authSlice = createSlice({
       state.error = null;
       state.data = null;
       state.isLoading = true;
+      console.log(state.success);
     });
     builder.addCase(signIn.rejected, (state, action: PayloadAction<any>) => {
       state.isLoading = false;
@@ -46,8 +53,12 @@ const authSlice = createSlice({
       state.isLoading = false;
       state.data = action.payload;
       state.success = true;
+      console.log();
+
       localStorage.setItem("token", state.data?.idToken!);
-      state.isAuthenticated = !!localStorage.getItem("token");
+      localStorage.setItem("userEmail", state.data?.email!);
+
+      state.isAuthenticated = true;
       const tokenSetTime = new Date().getTime();
       const tokenExpiringTime = tokenSetTime + 3600000;
       const toRealTime = new Date(tokenExpiringTime);
@@ -91,6 +102,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { setIsEditing, resetSuccess, logOut } = authSlice.actions;
+export const { setIsEditing, resetSuccess, resetError, logOut } =
+  authSlice.actions;
 
 export default authSlice.reducer;

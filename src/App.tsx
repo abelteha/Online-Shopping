@@ -15,11 +15,17 @@ import ProductDetail from "./pages/ProductDetail";
 import SearchPage from "./pages/SearchPage";
 import SigninPage from "./pages/SigninPage";
 import SignupPage from "./pages/SignupPage";
-import { logOut } from "./redux/slices/auth/auth-slice";
+import { fetchUser } from "./redux/api/apiEndpoingRequests";
+import {
+  logOut,
+  resetError,
+  resetSuccess,
+} from "./redux/slices/auth/auth-slice";
 import { setUserImage } from "./redux/slices/user-slice";
 const App = () => {
   const dispatch = useAppDispatch();
   const imageListRef = ref(storage, "images/");
+  const auth = useAppSelector((state) => state.authReducer);
 
   useEffect(() => {
     const time = localStorage.getItem("expireOn")!;
@@ -34,23 +40,32 @@ const App = () => {
       console.log(timeLeft);
     }
   });
+  useEffect(() => {
+    if (auth.success === true && auth.isAuthenticated) {
+      dispatch(fetchUser());
+      // navigate("/");
+
+      setTimeout(() => {
+        dispatch(resetSuccess());
+      }, 1500);
+    }
+    if (auth.error != null) {
+      setTimeout(() => {
+        dispatch(resetError());
+      }, 1500);
+    }
+  }, [auth.success, auth.error]);
 
   useEffect(() => {
-    // dispatch(resetImages());
-    // listAll(imageListRef).then((res) => {
-    //   res.items.forEach((item) => {
-    //     getDownloadURL(item).then((url) => {
-    //       dispatch(setImageList({ name: item.fullPath.slice(7), url: url }));
-    //     });
-    //   });
-    // });
-    const imageRef = ref(
-      storage,
-      `images/${localStorage.getItem("userEmail")}`
-    );
-    list(imageRef).then((res) =>
-      getDownloadURL(imageRef).then((res) => dispatch(setUserImage(res)))
-    );
+    if (localStorage.getItem("userEmail")) {
+      const imageRef = ref(
+        storage,
+        `images/${localStorage.getItem("userEmail")}`
+      );
+      list(imageRef).then((res) =>
+        getDownloadURL(imageRef).then((res) => dispatch(setUserImage(res)))
+      );
+    }
   }, []);
 
   return (
@@ -58,16 +73,20 @@ const App = () => {
       <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/signin">
-          <Route index={true} element={<SigninPage />} />
-          <Route
-            index={false}
-            path="forgotPassword"
-            element={<ForgotPasswordPage />}
-          />
-        </Route>
+        {!auth.isAuthenticated && (
+          <Route path="/signin">
+            <Route index={true} element={<SigninPage />} />
+            <Route
+              index={false}
+              path="forgotPassword"
+              element={<ForgotPasswordPage />}
+            />
+          </Route>
+        )}
 
-        <Route path="/signup" element={<SignupPage />} />
+        {!auth.isAuthenticated && (
+          <Route path="/signup" element={<SignupPage />} />
+        )}
 
         <Route path="/cart" element={<CartPage />} />
         <Route path="categories/:categoryID">

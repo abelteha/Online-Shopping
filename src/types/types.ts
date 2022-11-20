@@ -87,12 +87,28 @@ export type InitialAuthState = {
 export type InitialUserState = {
   uid: string;
   userName: string;
-  email: string;
+  email: string | null;
   image: string;
   cart: any[];
+  totalCartItems: number;
 };
 
 export type imagesFetchType = {
   name: string;
   url: string;
+};
+
+export type cart = {
+  itemName: string;
+  itemImage: string;
+  itemAmount: number;
+  itemPrice: number;
+};
+
+export type UserRegister = {
+  name: string;
+  nationality: string;
+  email: string;
+  cart: cart[];
+  totalNumberOfItem: number;
 };

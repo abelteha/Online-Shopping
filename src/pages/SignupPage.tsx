@@ -8,10 +8,15 @@ import { storage } from "../firebase";
 import { getDownloadURL, listAll, ref, uploadBytes } from "firebase/storage";
 
 import { usePrompt } from "../model/useBlocker";
-import { Link, useNavigate } from "react-router-dom";
-import { resetSuccess, setIsEditing } from "../redux/slices/auth/auth-slice";
+import { Link } from "react-router-dom";
+import {
+  resetError,
+  resetSuccess,
+  setIsEditing,
+} from "../redux/slices/auth/auth-slice";
 import { signUp } from "../redux/slices/auth/async-thunks";
 import SmallLoader from "../components/UI/SmallLoader";
+import { userRegister } from "../redux/api/apiEndpoingRequests";
 
 const InitialFormikValues: InitialFormikSignUPState = {
   firstName: "",
@@ -23,10 +28,10 @@ const InitialFormikValues: InitialFormikSignUPState = {
 const SignupPage = () => {
   const [image, setImage] = useState<File | null>(null);
   const [imageUploaded, setImageUploded] = useState<boolean>(true);
-  const navigate = useNavigate();
+
   const auth = useAppSelector((state) => state.authReducer);
   const dispatch = useAppDispatch();
-  const imageListRef = ref(storage, "images/");
+
   const formik = useFormik({
     initialValues: InitialFormikValues,
     validationSchema: YUP.object({
@@ -58,12 +63,24 @@ const SignupPage = () => {
   useEffect(() => {
     if (auth.success === true) {
       const imageRef = ref(storage, `images/${formik.values.email}`);
-      uploadBytes(imageRef, image!).then(() => alert("Image uploaded"));
+      userRegister({
+        name: formik.values.firstName + " " + formik.values.lastName,
+        nationality: formik.values.country,
+        email: formik.values.email,
+        cart: [],
+        totalNumberOfItem: 0,
+      });
+      uploadBytes(imageRef, image!).then(() => console.log("Image uploaded"));
       setTimeout(() => {
         dispatch(resetSuccess());
       }, 1500);
     }
-  }, [auth.success]);
+    if (auth.error != null) {
+      setTimeout(() => {
+        dispatch(resetError());
+      }, 1500);
+    }
+  }, [auth.success, auth.error]);
   useEffect(() => {
     if (formik.dirty) {
       dispatch(setIsEditing(true));

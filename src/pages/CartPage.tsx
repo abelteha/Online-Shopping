@@ -1,6 +1,8 @@
 import { BsFillCartCheckFill } from "react-icons/bs";
 import cartImg from "../assets/cart.png";
+import { useAppSelector } from "../model/hooks";
 const Cart = () => {
+  const user = useAppSelector((state) => state.userReducer);
   return (
     <div className="flex justify-between gap-10  mx-5 lg:mx-10 animate-slideup">
       <img
@@ -13,14 +15,22 @@ const Cart = () => {
         <div
           className=" max-h-[calc(100vh-20rem)] min-h-[20rem] bg-gray-50
          w-full border"
-        ></div>
-        <button
-          className="border-none px-5 py-2 hover:bg-[#a75b29] bg-[#C56E33] text-white rounded-lg w-[10rem] mt-6"
-          onClick={() => {}}
-          disabled={true}
         >
-          Check Out <BsFillCartCheckFill className="inline ml-1 text-lg" />
-        </button>
+          {user.totalCartItems === 0 && (
+            <p className="text-center text-lg px-10 mt-[7rem]">
+              No item in the cart!, May be add one?
+            </p>
+          )}
+        </div>
+        {user.totalCartItems > 0 && (
+          <button
+            className="border-none px-5 py-2 hover:bg-[#a75b29] bg-[#C56E33] text-white rounded-lg w-[10rem] mt-6"
+            onClick={() => {}}
+            disabled={true}
+          >
+            Check Out <BsFillCartCheckFill className="inline ml-1 text-lg" />
+          </button>
+        )}
       </div>
     </div>
   );
