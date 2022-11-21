@@ -4,8 +4,9 @@ import * as YUP from "yup";
 import { country_list } from "../model/countries";
 import { InitialFormikSignUPState } from "../types/types";
 import { useAppDispatch, useAppSelector } from "../model/hooks";
-import { storage } from "../firebase";
+import { db, storage } from "../firebase";
 import { getDownloadURL, listAll, ref, uploadBytes } from "firebase/storage";
+import { uid } from "uid";
 
 import { usePrompt } from "../model/useBlocker";
 import { Link } from "react-router-dom";
@@ -16,7 +17,8 @@ import {
 } from "../redux/slices/auth/auth-slice";
 import { signUp } from "../redux/slices/auth/async-thunks";
 import SmallLoader from "../components/UI/SmallLoader";
-import { userRegister } from "../redux/api/apiEndpoingRequests";
+
+import { set, ref as reff } from "firebase/database";
 
 const InitialFormikValues: InitialFormikSignUPState = {
   firstName: "",
@@ -55,15 +57,16 @@ const SignupPage = () => {
           returnSecureToken: true,
         })
       );
-      if (auth.success === true) {
-      }
     },
   });
 
   useEffect(() => {
     if (auth.success === true) {
       const imageRef = ref(storage, `images/${formik.values.email}`);
-      userRegister({
+
+      const uuid = uid();
+      set(reff(db, `/users/${uuid}`), {
+        uid: uuid,
         name: formik.values.firstName + " " + formik.values.lastName,
         nationality: formik.values.country,
         email: formik.values.email,

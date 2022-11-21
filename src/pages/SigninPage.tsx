@@ -14,7 +14,7 @@ import Loader from "../components/UI/Loader";
 import SmallLoader from "../components/UI/SmallLoader";
 import { signIn } from "../redux/slices/auth/async-thunks";
 import { setUserImage } from "../redux/slices/user-slice";
-import { fetchUser } from "../redux/api/apiEndpoingRequests";
+
 const formikInitialValues: InitialFormikSignInState = {
   email: "",
   password: "",

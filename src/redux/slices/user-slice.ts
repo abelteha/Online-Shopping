@@ -17,13 +17,28 @@ const userSlice = createSlice({
       state.image = action.payload;
     },
     setUserCart(state, action: PayloadAction<any>) {
-      state.userName = action.payload.name;
-      state.totalCartItems = action.payload.totalCartItems;
-      if (!!action.payload.cart) {
-        state.cart.length = 0;
-        state.cart = action.payload.cart;
+      // state.userName = action.payload.data.name;
+      // state.totalCartItems = action.payload.data.totalNumberOfItem;
+      // state.uid = action.payload.id;
+      // if (!!action.payload.cart) {
+      //   state.cart.length = 0;
+      //   state.cart = action.payload.data.cart;
+      // }
+
+      const data = action.payload;
+      for (let key in data) {
+        const userEmail = localStorage.getItem("userEmail");
+
+        if (data[key].email === userEmail) {
+          state.userName = data[key].name;
+          state.totalCartItems = data[key].totalNumberOfItem;
+          if (!!data[key].cart) {
+            state.cart.length = 0;
+            state.cart = data[key].cart;
+          }
+        }
+        console.log(state.userName, current(state.cart));
       }
-      console.log(state.userName, state.cart);
     },
   },
 });

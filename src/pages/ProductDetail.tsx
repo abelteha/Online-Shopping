@@ -10,6 +10,8 @@ import { useAppDispatch, useAppSelector } from "../model/hooks";
 
 const ProductDetail = () => {
   const divRef = useRef<HTMLDivElement>(null);
+  const [itemImg, setItemImg] = useState();
+  const user = useAppSelector((state) => state.userReducer);
 
   const dispatch = useAppDispatch();
   const product: Products = JSON.parse(localStorage.getItem("SingleProduct")!);
@@ -30,9 +32,16 @@ const ProductDetail = () => {
   const radioButtonCheckHandler = (img: string, i: number) => {
     dispatch(ProductsAction.setActiveImg(img));
     setIndex(i);
-    console.log(product.images[i]);
+    console.log(product.images[index]);
   };
-  const addToCartHandler = () => {};
+  const addToCartHandler = (name: string, price: number) => {
+    // updateCart(user.uid, {
+    //   itemName: name,
+    //   itemImage: product.images[index],
+    //   itemAmount: 1,
+    //   itemPrice: price,
+    // });
+  };
   return (
     <Fragment>
       <div
@@ -106,7 +115,7 @@ const ProductDetail = () => {
             </table>
             <button
               className="border-none px-5 py-2 hover:bg-[#a75b29] bg-[#C56E33] text-white rounded-lg w-[10rem] mt-6"
-              onClick={addToCartHandler}
+              onClick={() => addToCartHandler(product.title, product.price)}
             >
               Add To Cart <BsCartPlusFill className="inline ml-1" />
             </button>

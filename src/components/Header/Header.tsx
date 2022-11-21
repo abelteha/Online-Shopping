@@ -133,7 +133,7 @@ const Header = () => {
         </div>
       </div>
       {searchPressed && (
-        <div className="sticky z-10 bg-black/50 backdrop-blur-xl bg-opacity-60 top-[6.9rem] ">
+        <div className="sticky z-10 bg-black/50 backdrop-blur-xl bg-opacity-60 top-[6.9rem] md:hidden">
           <SearchForm value="pt-2" />
           <div
             className="absolute bg-black bg-opacity-60 w-full h-[calc(100vh-8.5rem)]"

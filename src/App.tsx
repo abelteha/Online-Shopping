@@ -1,8 +1,9 @@
+import { onValue, ref as reff } from "firebase/database";
 import { getDownloadURL, list, listAll, ref } from "firebase/storage";
 import { Fragment, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Header from "./components/Header/Header";
-import { storage } from "./firebase";
+import { db, storage } from "./firebase";
 
 import { useAppDispatch, useAppSelector } from "./model/hooks";
 
@@ -15,13 +16,13 @@ import ProductDetail from "./pages/ProductDetail";
 import SearchPage from "./pages/SearchPage";
 import SigninPage from "./pages/SigninPage";
 import SignupPage from "./pages/SignupPage";
-import { fetchUser } from "./redux/api/apiEndpoingRequests";
+
 import {
   logOut,
   resetError,
   resetSuccess,
 } from "./redux/slices/auth/auth-slice";
-import { setUserImage } from "./redux/slices/user-slice";
+import { setUserCart, setUserImage } from "./redux/slices/user-slice";
 const App = () => {
   const dispatch = useAppDispatch();
   const imageListRef = ref(storage, "images/");
@@ -42,8 +43,12 @@ const App = () => {
   });
   useEffect(() => {
     if (auth.success === true && auth.isAuthenticated) {
-      dispatch(fetchUser());
-      // navigate("/");
+      // dispatch(fetchUser());
+      // // navigate("/");
+      onValue(reff(db, "users"), (snapshot) => {
+        const data = snapshot.val();
+        dispatch(setUserCart(data));
+      });
 
       setTimeout(() => {
         dispatch(resetSuccess());
