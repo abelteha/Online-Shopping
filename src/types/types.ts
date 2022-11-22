@@ -90,6 +90,7 @@ export type InitialUserState = {
   email: string | null;
   image: string;
   cart: any[];
+  itemExistInCart: boolean;
   totalCartItems: number;
 };
 

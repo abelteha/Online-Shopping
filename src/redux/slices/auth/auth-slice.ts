@@ -33,6 +33,8 @@ const authSlice = createSlice({
       localStorage.removeItem("token");
       localStorage.removeItem("expireOn");
       localStorage.removeItem("userEmail");
+      localStorage.removeItem("uid");
+      localStorage.removeItem("totalAmt");
       state.isAuthenticated = false;
 
       console.log(state.success);

@@ -22,11 +22,16 @@ import {
   resetError,
   resetSuccess,
 } from "./redux/slices/auth/auth-slice";
-import { setUserCart, setUserImage } from "./redux/slices/user-slice";
+import userSlice, {
+  setDefaultAmount,
+  setUserCart,
+  setUserImage,
+} from "./redux/slices/user-slice";
 const App = () => {
   const dispatch = useAppDispatch();
   const imageListRef = ref(storage, "images/");
   const auth = useAppSelector((state) => state.authReducer);
+  const user = useAppSelector((state) => state.userReducer);
 
   useEffect(() => {
     const time = localStorage.getItem("expireOn")!;
@@ -70,6 +75,13 @@ const App = () => {
       list(imageRef).then((res) =>
         getDownloadURL(imageRef).then((res) => dispatch(setUserImage(res)))
       );
+      onValue(reff(db, "users"), (snapshot) => {
+        const data = snapshot.val();
+        dispatch(setUserCart(data));
+      });
+    }
+    if (localStorage.getItem("totalAmt")) {
+      dispatch(setDefaultAmount(+localStorage.getItem("totalAmt")!));
     }
   }, []);
 

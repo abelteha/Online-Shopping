@@ -7,10 +7,16 @@ import { ProductsAction } from "../redux/slices/products-slice";
 import Galary from "../components/Product/Galary";
 import Feedback from "../components/Product/Feedback";
 import { useAppDispatch, useAppSelector } from "../model/hooks";
+import { update } from "firebase/database";
+import { db } from "../firebase";
+import { uid } from "uid";
+
+import { onValue, ref as reff } from "firebase/database";
+import { setCart } from "../redux/slices/user-slice";
 
 const ProductDetail = () => {
   const divRef = useRef<HTMLDivElement>(null);
-  const [itemImg, setItemImg] = useState();
+  const [success, setSuccess] = useState<boolean | null>(null);
   const user = useAppSelector((state) => state.userReducer);
 
   const dispatch = useAppDispatch();
@@ -23,11 +29,6 @@ const ProductDetail = () => {
   useEffect(() => {
     dispatch(ProductsAction.setDefaultActiveImg());
   }, []);
-  useEffect(() => {
-    if (divRef.current) {
-      divRef.current.scrollTop = 0;
-    }
-  });
 
   const radioButtonCheckHandler = (img: string, i: number) => {
     dispatch(ProductsAction.setActiveImg(img));
@@ -35,19 +36,80 @@ const ProductDetail = () => {
     console.log(product.images[index]);
   };
   const addToCartHandler = (name: string, price: number) => {
-    // updateCart(user.uid, {
-    //   itemName: name,
-    //   itemImage: product.images[index],
-    //   itemAmount: 1,
-    //   itemPrice: price,
+    const uuid = uid();
+    const userid = localStorage.getItem("uid");
+
+    // onValue(reff(db, `users/${userid}/cart`), (snapshot) => {
+    //   const data = snapshot.val();
+    //   console.log(data);
+
+    //   for (let key in data) {
+    //     console.log(key);
+
+    //     if (data[key].itemName === name) {
+    //       // return update(reff(db, `users/${userid}/cart/${key}`), {
+    //       //   itemAmount: 3,
+    //       // });
+    //       console.log("exists");
+    //     }
+    //   }
+    //   update(reff(db, `users/${userid}/cart/${uuid}`), {
+    //     itemId: uuid,
+    //     itemName: name,
+    //     itemImage: product.images[index],
+    //     itemAmount: 1,
+    //     itemPrice: price,
+    //   });
     // });
+
+    if (user.cart.length > 0) {
+      const cart = user.cart;
+
+      for (let key in cart[0]) {
+        if (cart[0][key].itemName === name) {
+          update(reff(db, `users/${userid}/`), {
+            totalNumberOfItem: user.totalCartItems + 1,
+          });
+          update(reff(db, `users/${userid}/cart/${key}`), {
+            itemAmount: cart[0][key].itemAmount + 1,
+          });
+          return onValue(reff(db, `users/${userid}`), (snapshot) => {
+            const data = snapshot.val();
+            dispatch(setCart(data));
+          });
+        }
+      }
+
+      update(reff(db, `users/${userid}/cart/${uuid}`), {
+        uid: uuid,
+        itemName: name,
+        itemImage: product.images[index],
+        itemAmount: 1,
+        itemPrice: price,
+      });
+    } else {
+      update(reff(db, `users/${userid}/cart/${uuid}`), {
+        uid: uuid,
+        itemName: name,
+        itemImage: product.images[index],
+        itemAmount: 1,
+        itemPrice: price,
+      });
+    }
+    onValue(reff(db, `users/${userid}`), (snapshot) => {
+      const data = snapshot.val();
+      dispatch(setCart(data));
+    });
+    update(reff(db, `users/${userid}/`), {
+      totalNumberOfItem: user.totalCartItems + 1,
+    });
   };
+  useEffect(() => {
+    divRef.current!.scrollTop = 0;
+  });
   return (
-    <Fragment>
-      <div
-        ref={divRef}
-        className="flex  flex-col justify-center py-16 md:flex-row md:justify-between gap-10  animate-slideup  bg-gray-50  "
-      >
+    <div ref={divRef}>
+      <div className="flex  flex-col justify-center py-16 md:flex-row md:justify-between gap-10  animate-slideup  bg-gray-50  ">
         <div className="flex  flex-1 flex-col justify-center items-center md:ml-4">
           <img
             src={activeImg}
@@ -124,7 +186,7 @@ const ProductDetail = () => {
       </div>
       <Galary />
       <Feedback />
-    </Fragment>
+    </div>
   );
 };
 
