@@ -12,6 +12,7 @@ import CartPage from "./pages/CartPage";
 import CategoryProductsPage from "./pages/CategoryProductPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import HomePage from "./pages/HomePage";
+import PaymentDetail from "./pages/PaymentDetail";
 import ProductDetail from "./pages/ProductDetail";
 import SearchPage from "./pages/SearchPage";
 import SigninPage from "./pages/SigninPage";
@@ -105,11 +106,19 @@ const App = () => {
           <Route path="/signup" element={<SignupPage />} />
         )}
 
-        <Route path="/cart" element={<CartPage />} />
+        <Route path="/cart">
+          <Route index={true} element={<CartPage />} />
+          <Route
+            index={false}
+            path="payment detail"
+            element={<PaymentDetail />}
+          />
+        </Route>
+
         <Route path="categories/:categoryID">
           <Route index={true} element={<CategoryProductsPage />} />
           <Route index={false} path=":product" element={<ProductDetail />} />
-          <Route path="search" element={<SearchPage />} />
+          <Route index={false} path="search" element={<SearchPage />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" />} />

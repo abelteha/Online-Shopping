@@ -104,6 +104,7 @@ export type cart = {
   itemImage: string;
   itemAmount: number;
   itemPrice: number;
+  uid: string;
 };
 
 export type UserRegister = {

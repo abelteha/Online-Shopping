@@ -31,8 +31,7 @@ const userSlice = createSlice({
         if (data[key].email === userEmail) {
           state.userName = data[key].name;
           localStorage.setItem("totalAmt", data[key].totalNumberOfItem);
-
-          console.log(state.totalCartItems);
+          state.totalCartItems = data[key].totalNumberOfItem;
           localStorage.setItem("uid", key);
 
           if (!!data[key].cart) {
@@ -54,8 +53,6 @@ const userSlice = createSlice({
       //   state.cart.push(cart[c]);
       // }
       state.cart = [cart];
-
-      // console.log(state.cart);
     },
   },
 });

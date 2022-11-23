@@ -45,7 +45,6 @@ const authSlice = createSlice({
       state.error = null;
       state.data = null;
       state.isLoading = true;
-      console.log(state.success);
     });
     builder.addCase(signIn.rejected, (state, action: PayloadAction<any>) => {
       state.isLoading = false;
@@ -55,7 +54,6 @@ const authSlice = createSlice({
       state.isLoading = false;
       state.data = action.payload;
       state.success = true;
-      console.log();
 
       localStorage.setItem("token", state.data?.idToken!);
       localStorage.setItem("userEmail", state.data?.email!);
