@@ -4,11 +4,13 @@ import { imagesFetchType, InitialUserState } from "../../types/types";
 const initialState: InitialUserState = {
   uid: "",
   userName: "",
+  isEditingPaymentForm: false,
   email: localStorage.getItem("userEmail"),
   image: "",
   cart: [],
   itemExistInCart: false,
   totalCartItems: 0,
+  successfullTransaction: false,
 };
 const userSlice = createSlice({
   name: "user",
@@ -17,12 +19,22 @@ const userSlice = createSlice({
     setUserImage(state, action: PayloadAction<string>) {
       state.image = action.payload;
     },
+    setIsEditingPaymentForm(state, action: PayloadAction<boolean>) {
+      state.isEditingPaymentForm = action.payload;
+    },
     setIfItemExitsInCart(state, action: PayloadAction<boolean>) {
       state.itemExistInCart = action.payload;
     },
     setDefaultAmount(state, action: PayloadAction<number>) {
       state.totalCartItems = action.payload;
     },
+    setSuccessFullTransaction(state) {
+      state.successfullTransaction = true;
+      setTimeout(() => {
+        state.successfullTransaction = false;
+      }, 3000);
+    },
+
     setUserCart(state, action: PayloadAction<any>) {
       const data = action.payload;
       for (let key in data) {
@@ -64,4 +76,6 @@ export const {
   setCart,
   setDefaultAmount,
   setIfItemExitsInCart,
+  setIsEditingPaymentForm,
+  setSuccessFullTransaction,
 } = userSlice.actions;

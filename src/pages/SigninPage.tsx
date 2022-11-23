@@ -108,7 +108,7 @@ const SigninPage = () => {
           className="text-gray-400 text-sm mt-2 hover:text-[#C56E33] cursor-pointer block"
         >
           Create new account
-        </Link>{" "}
+        </Link>
         {auth.isLoading && <SmallLoader />}
         {auth.error && (
           <p className="text-red-600 text-center mt-2">{auth.error}</p>

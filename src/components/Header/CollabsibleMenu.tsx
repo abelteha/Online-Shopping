@@ -7,9 +7,9 @@ const CollabsibleMenu: FC<{
   hamburgerMenuHandler: () => void;
 }> = (props) => {
   return (
-    <div className="sticky top-[6.9rem] z-10">
+    <div className="sticky top-[6.9rem] z-20">
       <div
-        className={`absolute top-[0rem] h-[calc(100vh-7rem)] w-2/3 bg-white/70 z-10 p-6  pl-[15%] md:hidden duration-300 backdrop-blur-xl overflow-scroll ${
+        className={`absolute top-[0rem] h-[calc(100vh-7rem)] w-2/3 bg-white/70 z-20 p-6  pl-[15%] md:hidden duration-300 backdrop-blur-xl overflow-scroll ${
           props.toggleOpen ? "left-0" : "-left-full"
         }`}
       >

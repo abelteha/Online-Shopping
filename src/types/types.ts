@@ -87,11 +87,21 @@ export type InitialAuthState = {
 export type InitialUserState = {
   uid: string;
   userName: string;
+  isEditingPaymentForm: boolean;
   email: string | null;
   image: string;
   cart: any[];
   itemExistInCart: boolean;
   totalCartItems: number;
+  successfullTransaction: boolean;
+};
+export type InitialFormikCheckOutState = {
+  cardHolderName: string;
+  cardNumber: string;
+  address: string;
+  city: string;
+  postalCode: string;
+  country: string;
 };
 
 export type imagesFetchType = {
