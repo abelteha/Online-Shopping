@@ -1,23 +1,24 @@
 import { onValue, ref as reff } from "firebase/database";
 import { getDownloadURL, list, ref } from "firebase/storage";
-import { Fragment, useEffect } from "react";
+import { Fragment, lazy, Suspense, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Header from "./components/Header/Header";
-import SuccessTransaction from "./components/SuccessTransaction";
+import Loader from "./components/UI/Loader";
+// import SuccessTransaction from "./components/SuccessTransaction";
 import { db, storage } from "./firebase";
 
 import { useAppDispatch, useAppSelector } from "./model/hooks";
 
-import CartPage from "./pages/CartPage";
+// import CartPage from "./pages/CartPage";
 
-import CategoryProductsPage from "./pages/CategoryProductPage";
-import ForgotPasswordPage from "./pages/ForgotPasswordPage";
-import HomePage from "./pages/HomePage";
-import PaymentDetail from "./pages/PaymentDetail";
-import ProductDetail from "./pages/ProductDetail";
-import SearchPage from "./pages/SearchPage";
-import SigninPage from "./pages/SigninPage";
-import SignupPage from "./pages/SignupPage";
+// import CategoryProductsPage from "./pages/CategoryProductPage";
+// import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+// import HomePage from "./pages/HomePage";
+// import PaymentDetail from "./pages/PaymentDetail";
+// import ProductDetail from "./pages/ProductDetail";
+// import SearchPage from "./pages/SearchPage";
+// import SigninPage from "./pages/SigninPage";
+// import SignupPage from "./pages/SignupPage";
 
 import {
   logOut,
@@ -30,6 +31,20 @@ import {
   setUserCart,
   setUserImage,
 } from "./redux/slices/user-slice";
+
+const HomePage = lazy(() => import("./pages/HomePage"));
+const PaymentDetail = lazy(() => import("./pages/PaymentDetail"));
+const ProductDetail = lazy(() => import("./pages/ProductDetail"));
+const SearchPage = lazy(() => import("./pages/SearchPage"));
+const SigninPage = lazy(() => import("./pages/SigninPage"));
+const SignupPage = lazy(() => import("./pages/SignupPage"));
+const CartPage = lazy(() => import("./pages/CartPage"));
+const SuccessTransaction = lazy(
+  () => import("./components/SuccessTransaction")
+);
+const CategoryProductsPage = lazy(() => import("./pages/CategoryProductPage"));
+const ForgotPasswordPage = lazy(() => import("./pages/ForgotPasswordPage"));
+
 const App = () => {
   const dispatch = useAppDispatch();
 
@@ -100,44 +115,46 @@ const App = () => {
   return (
     <Fragment>
       <Header />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        {!auth.isAuthenticated && (
-          <Route path="/signin">
-            <Route index={true} element={<SigninPage />} />
-            <Route
-              index={false}
-              path="forgotPassword"
-              element={<ForgotPasswordPage />}
-            />
+      <Suspense fallback={<Loader clasName="md:w-full" />}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          {!auth.isAuthenticated && (
+            <Route path="/signin">
+              <Route index={true} element={<SigninPage />} />
+              <Route
+                index={false}
+                path="forgotPassword"
+                element={<ForgotPasswordPage />}
+              />
+            </Route>
+          )}
+
+          {!auth.isAuthenticated && (
+            <Route path="/signup" element={<SignupPage />} />
+          )}
+
+          <Route path="/cart">
+            <Route index={true} element={<CartPage />} />
+            <Route index={false} path="payment detail">
+              {!user.successfullTransaction && user.totalCartItems > 0 && (
+                <Route index={true} element={<PaymentDetail />} />
+              )}
+              {user.successfullTransaction && (
+                <Route index={false} path="" element={<SuccessTransaction />} />
+              )}
+              <Route path="" element={<Navigate to="/cart" />}></Route>
+            </Route>
           </Route>
-        )}
 
-        {!auth.isAuthenticated && (
-          <Route path="/signup" element={<SignupPage />} />
-        )}
-
-        <Route path="/cart">
-          <Route index={true} element={<CartPage />} />
-          <Route index={false} path="payment detail">
-            {!user.successfullTransaction && user.totalCartItems > 0 && (
-              <Route index={true} element={<PaymentDetail />} />
-            )}
-            {user.successfullTransaction && (
-              <Route index={false} path="" element={<SuccessTransaction />} />
-            )}
-            <Route path="" element={<Navigate to="/cart" />}></Route>
+          <Route path="categories/:categoryID">
+            <Route index={true} element={<CategoryProductsPage />} />
+            <Route index={false} path=":product" element={<ProductDetail />} />
+            <Route index={false} path="search" element={<SearchPage />} />
           </Route>
-        </Route>
 
-        <Route path="categories/:categoryID">
-          <Route index={true} element={<CategoryProductsPage />} />
-          <Route index={false} path=":product" element={<ProductDetail />} />
-          <Route index={false} path="search" element={<SearchPage />} />
-        </Route>
-
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </Suspense>
     </Fragment>
   );
 };

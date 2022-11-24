@@ -33,7 +33,7 @@ const Cart = () => {
       <div className="flex-1 flex flex-col items-center">
         <h1 className="text-2xl font-bold text-[#a75b29] my-5">Your Cart</h1>
         <div
-          className=" max-h-[calc(100vh-20rem)] min-h-[20rem] bg-gray-50
+          className=" max-h-[calc(100vh-25rem)] min-h-[20rem] bg-gray-50
          w-full xl:w-[80%] border overflow-scroll"
         >
           {user.totalCartItems === 0 ? (

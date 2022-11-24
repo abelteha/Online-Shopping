@@ -1,0 +1,1 @@
+import{j as r}from"./index.31036f5b.js";const a=({clasName:e})=>r("div",{className:` w-full ${e} sm:h-[calc(100vh-110px)] h-[calc(100vh-90px)] bg-gray-50 `,children:r("h1",{className:"text-2xl font-bold text-center pt-[10rem]",children:"Something is Wrong!, Try Again."})});export{a as E};
