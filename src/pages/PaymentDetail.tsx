@@ -74,13 +74,13 @@ const PaymentDetail = () => {
   const payButtonHandler = () => {};
 
   return (
-    <div className="flex justify-around sm:items-center  h-[calc(100vh-8rem)] sm:h-[calc(100vh-10rem)] lg:mx-10 animate-slideup overflow-scroll">
+    <div className="flex justify-around sm:items-center  h-[calc(100vh-8rem)] sm:h-[calc(100vh-10rem)] lg:mx-10 animate-slideup  ">
       <img
         src={payImg}
         alt=""
         className="max-w-[25rem] object-cover hidden md:block"
       />
-      <div className="flex flex-col">
+      <div className="flex flex-col h-[calc(100vh-2rem)] sm:mt-[10rem]">
         <h1 className="font-bold text-2xl my-7">Payment Details</h1>
         <form onSubmit={formik.handleSubmit} className="flex flex-col gap-4">
           <div className="relative sm:w-[23rem] w-[19rem]">

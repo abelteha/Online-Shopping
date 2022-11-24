@@ -58,7 +58,7 @@ const CartCard: FC<{ item: cart }> = ({ item }) => {
           alt=""
           className="w-[5rem] h-[5rem] md:w-[7rem] md:h-[7rem] hidden sm:block object-contain"
         />
-        <div className="flex flex-col sm:max-w-[10rem] max-w-[5rem]  ">
+        <div className="flex flex-col sm:max-w-[10rem] max-w-[5.5rem]  ">
           <h2 className="text-lg sm:text-xl font-bold my-2">{item.itemName}</h2>
           <p>${item.itemPrice}</p>
         </div>

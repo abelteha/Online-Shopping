@@ -19,7 +19,7 @@ const HomePage = () => {
     return <Loader clasName="md:w-full" />;
   }
   if (error) {
-    return <Error />;
+    return <Error clasName="md:w-full" />;
   }
 
   return (

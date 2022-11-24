@@ -22,7 +22,7 @@ const CategoryProducts = () => {
     }
   });
   if (error) {
-    return <Error />;
+    return <Error clasName="md:w-[calc(100vw-300px)] " />;
   } else if (isFetching) {
     return <Loader clasName="md:w-[calc(100vw-300px)] " />;
   } else {
