@@ -16,8 +16,10 @@ export type Products = {
 
 export type InitialProductState = {
   products: Products[];
-
+  productsFeedback: any[];
+  singleProductFeedback: feedBacks[];
   activeImg: string;
+  productId: number | null;
 };
 
 export type Search = {
@@ -124,4 +126,10 @@ export type UserRegister = {
   email: string;
   cart: cart[];
   totalNumberOfItem: number;
+};
+
+export type feedBacks = {
+  feedback: string;
+  id: number;
+  image: string;
 };

@@ -24,6 +24,7 @@ import {
   resetError,
   resetSuccess,
 } from "./redux/slices/auth/auth-slice";
+import { ProductsAction } from "./redux/slices/products-slice";
 import userSlice, {
   setDefaultAmount,
   setSuccessFullTransaction,
@@ -86,7 +87,15 @@ const App = () => {
     if (localStorage.getItem("totalAmt")) {
       dispatch(setDefaultAmount(+localStorage.getItem("totalAmt")!));
     }
-    dispatch(setSuccessFullTransaction(false));
+    if (localStorage.getItem("productId")) {
+      dispatch(ProductsAction.setDefaultId());
+    }
+  }, []);
+  useEffect(() => {
+    onValue(reff(db, `feedbacks/`), (snapshot) => {
+      const data = snapshot.val();
+      dispatch(ProductsAction.setProductsFeedback(data));
+    });
   }, []);
 
   return (

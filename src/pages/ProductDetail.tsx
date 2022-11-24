@@ -32,12 +32,16 @@ const ProductDetail = () => {
   useEffect(() => {
     dispatch(ProductsAction.setDefaultActiveImg());
     dispatch(setSuccessFullTransaction(false));
+    onValue(reff(db, `feedbacks/`), (snapshot) => {
+      const data = snapshot.val();
+      dispatch(ProductsAction.setProductsFeedback(data));
+    });
   }, []);
 
   const radioButtonCheckHandler = (img: string, i: number) => {
     dispatch(ProductsAction.setActiveImg(img));
     setIndex(i);
-    console.log(product.images[index]);
+    // console.log(product.images[index]);
   };
   const addToCartHandler = (name: string, price: number) => {
     if (auth.isAuthenticated === true) {
@@ -170,7 +174,7 @@ const ProductDetail = () => {
         </div>
       </div>
       <Galary />
-      <Feedback />
+      <Feedback prodName={product.title} prodId={product.id} />
     </div>
   );
 };
