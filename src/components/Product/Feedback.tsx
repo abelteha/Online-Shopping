@@ -28,6 +28,7 @@ const Feedback: FC<{ prodName: string; prodId: number }> = ({ prodId }) => {
       update(reff(db, `feedbacks/${uuid}`), {
         feedback: enteredFeedback,
         id: prodId,
+        name: user.userName,
         image: user.image,
         feedNo: product.feedbackNumber,
       });
@@ -74,13 +75,21 @@ const Feedback: FC<{ prodName: string; prodId: number }> = ({ prodId }) => {
           >
             <div className=" flex flex-col gap-5 w-full my-5 ">
               {sortedArray.map((f) => (
-                <div className="flex gap-5 bg-[#fce8da] min-h-[5rem] items-center mx-5 px-5 rounded-lg">
+                <div
+                  className={`flex ${
+                    f.name === user.userName &&
+                    "flex-row-reverse justify-between "
+                  } gap-5 bg-[#fce8da] min-h-[5rem] items-center mx-5   p-5 rounded-lg`}
+                >
                   <img
                     src={f.image}
                     alt=""
                     className="w-[3rem] h-[3rem] rounded-full"
                   />
-                  <p>{f.feedback}</p>
+                  <div className="flex flex-col max-w-[20rem]">
+                    <p className="text-sm text-[#a75b29] font-bold">{f.name}</p>
+                    <p>{f.feedback}</p>
+                  </div>
                 </div>
               ))}{" "}
             </div>

@@ -62,14 +62,17 @@ const SignupPage = () => {
 
   useEffect(() => {
     if (auth.success === true) {
-      const imageRef = ref(storage, `images/${formik.values.email}`);
+      const imageRef = ref(
+        storage,
+        `images/${formik.values.email.toLowerCase()}`
+      );
 
       const uuid = uid();
       set(reff(db, `/users/${uuid}`), {
         uid: uuid,
         name: formik.values.firstName + " " + formik.values.lastName,
         nationality: formik.values.country,
-        email: formik.values.email,
+        email: formik.values.email.toLowerCase(),
         cart: [],
         totalNumberOfItem: 0,
       });

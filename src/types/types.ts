@@ -134,4 +134,5 @@ export type feedBacks = {
   feedback: string;
   id: number;
   image: string;
+  name: string;
 };
