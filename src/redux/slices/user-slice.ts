@@ -10,6 +10,7 @@ const initialState: InitialUserState = {
   cart: [],
   itemExistInCart: false,
   totalCartItems: 0,
+  totalPrice: 0,
   successfullTransaction: false,
 };
 const userSlice = createSlice({
@@ -28,11 +29,12 @@ const userSlice = createSlice({
     setDefaultAmount(state, action: PayloadAction<number>) {
       state.totalCartItems = action.payload;
     },
-    setSuccessFullTransaction(state) {
-      state.successfullTransaction = true;
-      setTimeout(() => {
-        state.successfullTransaction = false;
-      }, 3000);
+    setTotalPrice(state, action: PayloadAction<number>) {
+      state.totalPrice = action.payload;
+    },
+
+    setSuccessFullTransaction(state, action: PayloadAction<boolean>) {
+      state.successfullTransaction = action.payload;
     },
 
     setUserCart(state, action: PayloadAction<any>) {
@@ -77,5 +79,7 @@ export const {
   setDefaultAmount,
   setIfItemExitsInCart,
   setIsEditingPaymentForm,
+  setTotalPrice,
+
   setSuccessFullTransaction,
 } = userSlice.actions;

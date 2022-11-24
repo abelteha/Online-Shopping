@@ -12,7 +12,7 @@ import { db } from "../firebase";
 import { uid } from "uid";
 
 import { onValue, ref as reff } from "firebase/database";
-import { setCart } from "../redux/slices/user-slice";
+import { setCart, setSuccessFullTransaction } from "../redux/slices/user-slice";
 import { useNavigate } from "react-router-dom";
 
 const ProductDetail = () => {
@@ -31,6 +31,7 @@ const ProductDetail = () => {
 
   useEffect(() => {
     dispatch(ProductsAction.setDefaultActiveImg());
+    dispatch(setSuccessFullTransaction(false));
   }, []);
 
   const radioButtonCheckHandler = (img: string, i: number) => {

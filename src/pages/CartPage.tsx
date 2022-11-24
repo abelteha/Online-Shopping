@@ -1,11 +1,14 @@
+import { useEffect } from "react";
 import { BsFillCartCheckFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import cartImg from "../assets/cart.jpg";
 import CartCard from "../components/Cards/CartCard";
-import { useAppSelector } from "../model/hooks";
+import { useAppDispatch, useAppSelector } from "../model/hooks";
+import { setTotalPrice } from "../redux/slices/user-slice";
 const Cart = () => {
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.userReducer);
+  const dispatch = useAppDispatch();
   let cartArray = [];
   let totalPrice = 0;
   for (let key in user.cart[0]) {
@@ -14,9 +17,10 @@ const Cart = () => {
   for (let i = 0; i < cartArray.length; i++) {
     totalPrice += cartArray[i].itemPrice * cartArray[i].itemAmount;
   }
+  useEffect(() => {
+    dispatch(setTotalPrice(totalPrice));
+  });
   const checkOutHandler = () => {
-    console.log("af");
-
     navigate("payment detail");
   };
   return (
@@ -50,7 +54,7 @@ const Cart = () => {
         {user.totalCartItems > 0 && (
           <>
             <h1 className="text-xl font-bold mt-4">
-              Total Price: ${totalPrice}
+              Total Price: ${user.totalPrice}
             </h1>
             <button
               className="border-none px-5 py-2 hover:bg-[#a75b29] bg-[#C56E33] text-white rounded-lg w-[10rem] mt-6"

@@ -3,6 +3,7 @@ import { getDownloadURL, list, listAll, ref } from "firebase/storage";
 import { Fragment, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Header from "./components/Header/Header";
+import SuccessTransaction from "./components/SuccessTransaction";
 import { db, storage } from "./firebase";
 
 import { useAppDispatch, useAppSelector } from "./model/hooks";
@@ -25,12 +26,13 @@ import {
 } from "./redux/slices/auth/auth-slice";
 import userSlice, {
   setDefaultAmount,
+  setSuccessFullTransaction,
   setUserCart,
   setUserImage,
 } from "./redux/slices/user-slice";
 const App = () => {
   const dispatch = useAppDispatch();
-  const imageListRef = ref(storage, "images/");
+
   const auth = useAppSelector((state) => state.authReducer);
   const user = useAppSelector((state) => state.userReducer);
 
@@ -84,6 +86,7 @@ const App = () => {
     if (localStorage.getItem("totalAmt")) {
       dispatch(setDefaultAmount(+localStorage.getItem("totalAmt")!));
     }
+    dispatch(setSuccessFullTransaction(false));
   }, []);
 
   return (
@@ -108,11 +111,15 @@ const App = () => {
 
         <Route path="/cart">
           <Route index={true} element={<CartPage />} />
-          <Route
-            index={false}
-            path="payment detail"
-            element={<PaymentDetail />}
-          />
+          <Route index={false} path="payment detail">
+            {!user.successfullTransaction && user.totalCartItems > 0 && (
+              <Route index={true} element={<PaymentDetail />} />
+            )}
+            {user.successfullTransaction && (
+              <Route index={false} path="" element={<SuccessTransaction />} />
+            )}
+            <Route path="" element={<Navigate to="/cart" />}></Route>
+          </Route>
         </Route>
 
         <Route path="categories/:categoryID">

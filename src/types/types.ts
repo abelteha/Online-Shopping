@@ -92,6 +92,7 @@ export type InitialUserState = {
   image: string;
   cart: any[];
   itemExistInCart: boolean;
+  totalPrice: number;
   totalCartItems: number;
   successfullTransaction: boolean;
 };

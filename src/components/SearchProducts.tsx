@@ -41,7 +41,7 @@ const SearchProducts = () => {
   if (error) {
     return <Error />;
   } else if (isFetching) {
-    return <Loader clasName="xl:w-[78%] lg:w-[70%]  w-full" />;
+    return <Loader clasName="md:w-[calc(100vw-300px)]" />;
   } else {
     dispatch(searchAction.searchResults(data?.products!));
     dispatch(ProductsAction.setNewCategoryProducts(data?.products!));

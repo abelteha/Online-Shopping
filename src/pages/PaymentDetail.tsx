@@ -11,7 +11,10 @@ import { useAppDispatch, useAppSelector } from "../model/hooks";
 import {
   setIsEditingPaymentForm,
   setSuccessFullTransaction,
+  setTotalPrice,
 } from "../redux/slices/user-slice";
+import { remove, ref as reff, update } from "firebase/database";
+import { db } from "../firebase";
 
 const InitialFormikValues: InitialFormikCheckOutState = {
   cardHolderName: "",
@@ -38,7 +41,16 @@ const PaymentDetail = () => {
     }),
     onSubmit: (values) => {
       dispatch(setIsEditingPaymentForm(false));
-      dispatch(setSuccessFullTransaction());
+      dispatch(setTotalPrice(0));
+      dispatch(setSuccessFullTransaction(true));
+
+      const userid = localStorage.getItem("uid");
+      if (userid) {
+        remove(reff(db, `users/${userid}/cart`));
+        update(reff(db, `users/${userid}/`), {
+          totalNumberOfItem: 0,
+        });
+      }
     },
   });
 
@@ -62,7 +74,7 @@ const PaymentDetail = () => {
   const payButtonHandler = () => {};
 
   return (
-    <div className="flex justify-around sm:items-center  h-[calc(100vh-8rem)] lg:mx-10 animate-slideup overflow-scroll">
+    <div className="flex justify-around sm:items-center  h-[calc(100vh-8rem)] sm:h-[calc(100vh-10rem)] lg:mx-10 animate-slideup overflow-scroll">
       <img
         src={payImg}
         alt=""
@@ -120,7 +132,7 @@ const PaymentDetail = () => {
               value={formik.values.address}
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
-              className={`w-full bg-gray-100 rounded-lg sm:h-[4rem] h-[3.5rem] pt-3 sm:pt-2 px-[15px] sm:px-0  text-base ${
+              className={`w-full bg-gray-100 rounded-lg sm:h-[4rem] h-[3.5rem] pt-3 sm:pt-2 px-[15px]  text-base ${
                 addressErr && "border-2 border-red-600"
               } outline-[#ffad76]`}
             />
@@ -138,7 +150,7 @@ const PaymentDetail = () => {
                 value={formik.values.city}
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
-                className={`w-full bg-gray-100 rounded-lg sm:h-[4rem] h-[3.5rem] pt-3 sm:pt-2 px-[15px] sm:px-0 text-base ${
+                className={`w-full bg-gray-100 rounded-lg sm:h-[4rem] h-[3.5rem] pt-3 sm:pt-2 px-[15px] text-base ${
                   cityErr && "border-2 border-red-600"
                 } outline-[#ffad76]`}
               />
@@ -155,7 +167,7 @@ const PaymentDetail = () => {
                 value={formik.values.postalCode}
                 onBlur={formik.handleBlur}
                 onChange={formik.handleChange}
-                className={`w-full bg-gray-100 rounded-lg sm:h-[4rem] h-[3.5rem] pt-3 sm:pt-2 px-[15px] sm:px-0 text-base ${
+                className={`w-full bg-gray-100 rounded-lg sm:h-[4rem] h-[3.5rem] pt-3 sm:pt-2 px-[15px]  text-base ${
                   postalCErr && "border-2 border-red-600"
                 } outline-[#ffad76]`}
               />
@@ -170,7 +182,7 @@ const PaymentDetail = () => {
               id="country"
               value={formik.values.country}
               onChange={formik.handleChange}
-              className={`w-full bg-gray-100 rounded-lg sm:h-[4rem] h-[3.5rem] pt-3 sm:pt-2 px-[11px] sm:px-0 text-base ${
+              className={`w-full bg-gray-100 rounded-lg sm:h-[4rem] h-[3.5rem] pt-3 sm:pt-2 px-[11px] sm:px-[11px] text-base ${
                 countryErr && "border-2 border-red-600"
               } outline-[#ffad76]`}
             >
@@ -192,15 +204,8 @@ const PaymentDetail = () => {
             className="bg-[#C56E33] hover:bg-[#a75b29] text-white h-[3rem] rounded-md"
             onClick={payButtonHandler}
           >
-            Pay ${}
+            Pay ${user.totalPrice}
           </button>
-          {user.successfullTransaction && (
-            <p className="text-[#21ab33] mx-10 text-center w-[14rem]">
-              Successfully Purchased!!!, will be delivered in 3 work days.
-              <br />
-              Thanks for shopping with us.
-            </p>
-          )}
         </form>
       </div>
     </div>
