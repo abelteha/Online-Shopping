@@ -9,6 +9,7 @@ import {
 const initialState: InitialProductState = {
   products: [],
   activeImg: "",
+  feedbackNumber: 0,
   productsFeedback: [],
   singleProductFeedback: [],
   productId: null,
@@ -45,13 +46,16 @@ const Products = createSlice({
     setProductsFeedback(state, action: PayloadAction<any[]>) {
       state.productsFeedback.length = 0;
       state.singleProductFeedback.length = 0;
-      // console.log(action.payload, state.productId);
+
       const feedbacks = [action.payload];
       state.productsFeedback = feedbacks;
-      console.log(state.productsFeedback);
-      for (let key in state.productsFeedback[0]) {
-        console.log("in loop");
 
+      let cleanArry = [];
+      for (let key in state.productsFeedback[0]) {
+        if (state.productsFeedback[0][key].id) {
+          // state.feedbackNumber++;
+          cleanArry.push(state.productsFeedback[0][key]);
+        }
         if (
           state.productsFeedback[0][key].id ===
           +localStorage.getItem("productId")!
@@ -59,7 +63,7 @@ const Products = createSlice({
           state.singleProductFeedback.push(state.productsFeedback[0][key]);
         }
       }
-      console.log(current(state.singleProductFeedback));
+      state.feedbackNumber = cleanArry.length;
     },
     setSingleProductFeedback(state, action: PayloadAction<feedBacks[]>) {
       state.singleProductFeedback = action.payload;

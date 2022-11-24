@@ -1,5 +1,5 @@
 import { onValue, ref as reff } from "firebase/database";
-import { getDownloadURL, list, listAll, ref } from "firebase/storage";
+import { getDownloadURL, list, ref } from "firebase/storage";
 import { Fragment, useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Header from "./components/Header/Header";
@@ -25,9 +25,8 @@ import {
   resetSuccess,
 } from "./redux/slices/auth/auth-slice";
 import { ProductsAction } from "./redux/slices/products-slice";
-import userSlice, {
+import {
   setDefaultAmount,
-  setSuccessFullTransaction,
   setUserCart,
   setUserImage,
 } from "./redux/slices/user-slice";
@@ -47,7 +46,7 @@ const App = () => {
       setTimeout(() => {
         dispatch(logOut());
       }, timeLeft);
-      console.log(timeLeft);
+      console.log(timeLeft / 1000);
     }
   });
   useEffect(() => {

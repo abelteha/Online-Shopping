@@ -16,6 +16,7 @@ export type Products = {
 
 export type InitialProductState = {
   products: Products[];
+  feedbackNumber: number;
   productsFeedback: any[];
   singleProductFeedback: feedBacks[];
   activeImg: string;
@@ -129,6 +130,7 @@ export type UserRegister = {
 };
 
 export type feedBacks = {
+  feedNo: number;
   feedback: string;
   id: number;
   image: string;

@@ -1,30 +1,22 @@
 import { update, ref as reff, onValue } from "firebase/database";
-import { FC, FormEvent, Fragment, useEffect, useState } from "react";
+import { FC, FormEvent, Fragment, useEffect, useRef, useState } from "react";
 import fbImg from "../../assets/FB.jpg";
 import { db } from "../../firebase";
 import { uid } from "uid";
 import { useAppDispatch, useAppSelector } from "../../model/hooks";
 import { useNavigate } from "react-router-dom";
-import { feedBacks } from "../../types/types";
+
 import { ProductsAction } from "../../redux/slices/products-slice";
+import { feedBacks } from "../../types/types";
 
 const Feedback: FC<{ prodName: string; prodId: number }> = ({ prodId }) => {
   const [enteredFeedback, setEnteredFeedback] = useState("");
   const user = useAppSelector((state) => state.userReducer);
   const auth = useAppSelector((state) => state.authReducer);
+  const divRef = useRef<HTMLDivElement>(null);
   const product = useAppSelector((state) => state.productReducer);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
-  // let feedbacks: feedBacks[] = [];
-
-  // for (let key in product.productsFeedback[0]) {
-  //   console.log("in loop");
-
-  //   if (product.productsFeedback[0][key].id === prodId) {
-  //     feedbacks.push(product.productsFeedback[0][key]);
-  //   }
-  // }
 
   const feedbackSubmitHandler = (e: FormEvent) => {
     e.preventDefault();
@@ -37,6 +29,7 @@ const Feedback: FC<{ prodName: string; prodId: number }> = ({ prodId }) => {
         feedback: enteredFeedback,
         id: prodId,
         image: user.image,
+        feedNo: product.feedbackNumber,
       });
 
       onValue(reff(db, `feedbacks/`), (snapshot) => {
@@ -48,12 +41,20 @@ const Feedback: FC<{ prodName: string; prodId: number }> = ({ prodId }) => {
     }
     setEnteredFeedback("");
   };
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     dispatch(ProductsAction.setSingleProductFeedback(feedbacks));
-  //     console.log(product.singleProductFeedback);
-  //   }, 1000);
-  // }, [product.productsFeedback.length]);
+  useEffect(() => {
+    if (divRef.current) {
+      divRef.current.scrollTop = 1000000;
+    }
+  });
+
+  let sortedArray: feedBacks[] = [];
+  if (product.singleProductFeedback.length > 0) {
+    sortedArray = [...product.singleProductFeedback];
+    sortedArray = sortedArray.sort((a, b) =>
+      a.feedNo > b.feedNo ? 1 : b.feedNo > a.feedNo ? -1 : 0
+    );
+  }
+
   return (
     <Fragment>
       <h1 className="text-[2rem] font-bold text-[#a75b29] text-center bg-gray-100 pt-10 animate-slideup">
@@ -67,9 +68,12 @@ const Feedback: FC<{ prodName: string; prodId: number }> = ({ prodId }) => {
           className="w-[27rem] h-[30rem] lg:w-[30rem] rounded-xl hidden md:block ml-4 mt-14"
         />
         <div className=" flex flex-col items-center py-10 ">
-          <div className="w-[90%] h-[300px]  md:max-w-[500px]  bg-white overflow-scroll my-4 shadow-inner border">
+          <div
+            ref={divRef}
+            className="w-[90%] h-[300px]  md:max-w-[500px]  bg-white overflow-scroll my-4 shadow-inner border"
+          >
             <div className=" flex flex-col gap-5 w-full my-5 ">
-              {product.singleProductFeedback.map((f) => (
+              {sortedArray.map((f) => (
                 <div className="flex gap-5 bg-[#fce8da] min-h-[5rem] items-center mx-5 px-5 rounded-lg">
                   <img
                     src={f.image}
